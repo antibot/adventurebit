@@ -1,7 +1,9 @@
 <?php get_header(); ?>
 
 		<div id="container">
-		  123
+		  <?php
+        get_template_part( 'loop', 'index' );
+      ?>
 		</div><!-- #container -->
 
 <?php get_sidebar(); ?>

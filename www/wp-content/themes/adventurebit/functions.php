@@ -10,5 +10,4 @@ if(function_exists('add_theme_support')) {
 register_nav_menu('main', 'Главное меню');
 
 
-
 ?>

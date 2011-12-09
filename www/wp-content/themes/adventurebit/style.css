@@ -66,3 +66,29 @@ footer, header, hgroup, menu, nav, section {
 
 /* adventurebit CSS
 ----------------------------------------------------------------------------- */
+
+#container #home {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  left: 50%;
+  top: 50%;
+  margin-top: -150px;
+  margin-left: -150px;
+  clear: both;
+  float: none;
+}
+
+#container #home #logotype {
+  cursor: pointer;
+  float: left;
+}
+
+#container #home #logotype img {
+  height: 300px;
+}
+
+#container #home #menu {
+  float: left;
+  padding: 100px 0 0 20px;
+}
