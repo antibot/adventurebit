@@ -67,7 +67,19 @@ footer, header, hgroup, menu, nav, section {
 /* adventurebit CSS
 ----------------------------------------------------------------------------- */
 
-#container #home {
+h1 {
+  font-size: 30px;
+}
+
+#main #container {
+  width: 980px;
+  margin: 0 auto;
+}
+
+/* home page CSS
+----------------------------------------------------------------------------- */
+
+#home {
   position: absolute;
   width: 300px;
   height: 300px;
@@ -79,21 +91,37 @@ footer, header, hgroup, menu, nav, section {
   float: none;
 }
 
-#container #home a {
+#home a {
   color: #000;
   text-decoration: none;
 }
 
-#container #home #logotype {
+#home #logotype {
   cursor: pointer;
   float: left;
 }
 
-#container #home #logotype img {
+#home #logotype img {
   height: 300px;
 }
 
-#container #home #menu {
+#home #menu {
   float: left;
   padding: 100px 0 0 20px;
+}
+
+/* page CSS
+----------------------------------------------------------------------------- */
+
+#page-menu {
+  
+}
+
+#page-menu li {
+  display: inline-block;
+  margin: 10px 10px 10px 0;  
+}
+
+#page-menu li.current-menu-item {
+  font-weight: bold;
 }

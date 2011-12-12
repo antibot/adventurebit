@@ -1,19 +1,32 @@
-<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
+<div id="page-menu">
+  <?php wp_nav_menu('menu=main'); ?>
+</div>
 
+<?php 
+  if(function_exists('bcn_display')) {
+    bcn_display();
+  }
+  
+  if (have_posts()) :
+    while(have_posts()) :
+      the_post(); 
+?>
 				<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-					<?php if ( is_front_page() ) { ?>
+					<?php if (is_front_page()) : ?>
 						<h2 class="entry-title"><?php the_title(); ?></h2>
-					<?php } else { ?>
+					<?php else: ?>
 						<h1 class="entry-title"><?php the_title(); ?></h1>
-					<?php } ?>
+					<?php endif; ?>
 
 					<div class="entry-content">
 						<?php the_content(); ?>
-						<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
-						<?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="edit-link">', '</span>' ); ?>
-					</div><!-- .entry-content -->
-				</div><!-- #post-## -->
+					</div><!-- entry-content -->
+					<?php edit_post_link( __( 'Редактировать', 'adventurebit' ), '<span class="edit-link">', '</span>' ); ?>
+				</div><!-- post -->
 
-				<?php comments_template( '', true ); ?>
+				<?php comments_template('', true ); ?>
 
-<?php endwhile; // end of the loop. ?>
+<?php 
+    endwhile;
+  endif; 
+?>
