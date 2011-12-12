@@ -1,0 +1,17 @@
+.roundabout-holder li.item-2 {
+  height:284.24px;
+  left:-140.6px;
+  top:38.8px;
+  width:418px;
+  z-index:175;
+}
+.roundabout-holder li.item-3 {
+  height:284.24px;
+  left:366.1px;
+  top:38.8px;
+  width:418px;
+  z-index:175;
+}
+ .works li:hover .extra {display:block;}
+
+#featured a:hover .indicator {display:block;}

@@ -1,0 +1,902 @@
+.iwak-color {
+text-transform:uppercase;
+}
+
+#iwak-admin, 
+.iwak-page input, 
+#iwak-admin select,
+.iwak-page textarea {
+color:#464646;
+border-color: #cccccc;
+}
+
+.iwak-page input.invalid, 
+.iwak-page textarea.invalid {
+border-color: #888;
+}
+
+.fr {float:right}
+#iwak-admin .header .fr {margin: -2px 28px 0 0;z-index:1;position:relative;}
+#iwak-admin .box {
+margin:20px 0;
+padding:20px 20px 30px;
+background:#f1f1f1;
+   border-color: #FDFDFD #E3E3E3 #E3E3E3 #EEEEEE;
+    border-style: solid;
+    border-width: 1px;
+    }
+#iwak-admin .box li {
+padding:5px 0;
+}
+#iwak-admin .box h3 {
+font-size:20px;
+margin-bottom:20px;
+}
+.iwak-contactform {width:500px;}
+#iwak-admin .form-input {display:inline;display:inline-block;margin:10px 0 0;}
+#iwak-admin .form-input input {padding:5px;}
+
+#iwak-versions {
+position:absolute;
+right:0;bottom:0;
+background:transparent url(images/versionbar.png) no-repeat 0 0;
+padding:0 8px 0 26px;
+font-family:tahoma;
+font-size:10px;
+line-height:16px;
+color:#808080;
+}
+#iwak-versions span {margin-right:3px;}
+#iwak-versions span.version_number {color:#e4e4e4;margin-right:10px;}
+
+.loaderIcon {
+background: transparent url(images/loader.gif) no-repeat 0 0;
+width:16px;
+height:16px;
+display:none;
+vertical-align:middle;
+}
+
+.iwak-button {
+cursor:pointer;
+-khtml-border-radius: 4px;
+-moz-border-radius: 4px;
+-webkit-border-radius: 4px;
+border-radius: 4px;
+    display: inline-block;
+    padding: 7px 13px;
+}
+
+.iwak-button-status {
+background-color:#ddd;
+    color: #999999;
+    text-shadow: 0 1px #FFFFFF;
+}
+
+.button-status-on {
+background-color:#3EE6D7;
+    color: #fff;
+    text-shadow: none;
+}
+
+.iwak-page input.button-primary {
+border-color:#298CBA;
+color:#FFFFFF;
+}
+ 
+#iwak-admin h1, #iwak-admin h2, #iwak-admin h3 {
+font-weight:normal;
+line-height:1em;
+margin:0;
+}
+
+.iwak-page cufon {float:left;}
+
+.iwak-page .suptitle {
+padding-left:12px;
+padding-bottom:2px;
+font-family:tahoma, arial;
+font-size:11px;
+line-height:18px;
+color:#bbbbbb;
+text-transform:uppercase;
+letter-spacing:1px;
+}
+
+#iwak-admin h1 {
+font-size:30px;
+line-height:1;
+text-transform:uppercase;
+padding:0 0 13px 10px;
+letter-spacing:-2px;
+}
+
+.iwak-page-general .first-word {
+color: #6895ac;
+}
+
+.iwak-page-featured .first-word {
+color: #be6eac;
+}
+
+.iwak-page-testimonial .first-word {
+color: #c4c17c;
+}
+
+#iwak-admin h2, #iwak-admin h3 {
+font-family:  Arial;
+}
+
+#iwak-admin option {
+padding-left:5px;
+}
+
+.iwak-page {
+margin: 0 12px 0 5px;
+}
+
+.iwak-page li {
+margin:0
+}
+
+.iwak-page p {
+margin-bottom: 10px;
+}
+
+.iwak-page form {
+overflow:hidden;
+position:relative;
+}
+
+.iwak-page .groups {
+width:1000%;
+}
+
+.iwak-page .group {
+float:left;
+width:10%;
+}
+
+.iwak-page table {
+width:100%;
+border-left:1px solid #e2e2e2;
+border-right:1px solid #e2e2e2;
+background:#fff url(images/table.png) repeat-x 0 0;
+border-collapse:collapse;
+}
+
+    .iwak-page table table {
+        background:none;
+        border:none;
+    }
+
+    .iwak-page table.testimonial-item,
+    .iwak-page table.featured-item {
+        background-image:none;
+        background-color:#fff;
+        border-top:1px solid #fff;
+        border-bottom:1px solid #e3e3e3;
+    }
+    
+.iwak-page .header {
+position:relative;
+margin-top:25px;
+height:63px;
+background:transparent url(images/header.gif) repeat-x 0 bottom;
+}
+
+.iwak-page .nav {
+float:left;
+width:100%;
+height:85px;
+display:block;
+background-color:#464646;
+}
+
+.iwak-page .nav-panel {
+float:left;
+display:block;
+padding:10px 0 10px 35px;
+width:100px;
+height:65px;
+background: transparent url(images/nav.png) no-repeat 5px 0;
+}
+    
+    .iwak-page .nav-panel-1 {
+        margin-left:10px;
+    }
+    
+.iwak-page .nav-panel h2 {
+color:#aeaeae;
+}
+
+.iwak-page .nav-panel p {
+margin-top:3px;
+margin-right:10px;
+line-height:15px;
+color:#878787;
+font-size:11px;
+padding-left:1px;
+}
+
+.iwak-page .nav-panel span {
+margin-right:5px;
+}
+
+.iwak-page .nav-panel-active, .iwak-page .nav-panel:hover {
+cursor:pointer;
+background: transparent url(images/nav.png) no-repeat 5px -73px;
+}
+
+.iwak-page .nav-panel-active h2, .iwak-page .nav-panel:hover h2 {
+color:#fff;
+}
+
+.iwak-page .nav-panel-active p, .iwak-page .nav-panel:hover p {
+color:#c0c0c0;
+}
+
+.iwak-heading {
+float:left;
+margin-right:20px;
+}
+
+.iwak-message p {
+float:left;
+margin:10px 10px 0 0;
+padding:6px 1em;
+font-family:arial;
+line-height:19px;
+font-weight:bold;
+-khtml-border-radius: 6px;
+-moz-border-radius: 6px;
+-webkit-border-radius: 6px;
+border-radius: 6px;
+}
+
+.message-saved p {
+background-color:#8ef390;
+color:#4a6864;
+}
+
+.message-update p {
+background-color:#ffcc66;
+color:#696549;
+}
+
+.useful-links {
+position:absolute;
+right:0;
+bottom:8px;
+margin-top:33px;
+}
+
+.useful-links li {
+font-size:11px;
+line-height:1em;
+padding:0 12px 0 12px;
+list-style:none;
+background:transparent url(images/bullet.gif) no-repeat 0 0;
+float:left;
+}
+
+.useful-links a {
+text-transform:uppercase;
+text-decoration:none;
+}
+    
+.depth-0 th {
+padding:20px;
+width:136px;
+text-align:left;
+font-weight:normal;
+color:#101010;
+vertical-align:top;
+}
+
+.depth-0 td {
+padding:17px 20px 5px 20px;
+text-align:left;
+vertical-align:top;
+}
+
+.depth-1 th {
+font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+font-style: italic;
+font-size: 12px;
+width:60px;
+}
+
+.depth-1 th,
+.depth-1 td {
+padding:0 0 4px;
+vertical-align:middle;
+}
+
+.iwak-page .alt th, .iwak-page .alt td {
+background-color:#f2f2f2;
+}
+
+    .iwak-page .alt .alt, .iwak-page .alt .alt {
+        background-color:transparent;
+    }
+
+input.small-text,
+select.regular-select {
+width:150px;
+}
+
+.large-select {
+width:380px;
+}
+
+.regular-text,
+.small-textarea,
+.regular-textarea {
+width:380px;
+padding-left:6px;
+}
+
+.regular-text {
+line-height:16px;
+}
+
+.small-textarea,
+.regular-textarea {
+line-height:18px;
+}
+
+.regular-textarea {
+height:126px;
+}
+
+.wide-textarea {
+width:600px;
+height:100px;
+}
+
+.large-textarea {
+width:487px;
+height:200px;
+}
+
+.regular-radio {
+display:block;
+margin-right:20px;
+padding:0 0 2px;
+}
+
+.radiobutton {
+margin-right:10px;
+}
+
+p.desc {
+width:500px;
+margin: 7px 20px 5px 4px;
+font-style:italic;
+font-size:11px;
+line-height:17px;
+color:#666666;
+}
+
+    .depth-1 .desc {
+        display:inline;
+        padding:0 5px;
+        margin:5px 5px 0;
+        vertical-align:top;
+    }
+    
+.status {
+font-size:10px;
+margin-left:4px;
+margin-top:10px;
+margin-bottom:10px;
+color:red;
+font-weight:bold;
+}
+
+.upload_button {
+margin-left:10px;
+padding:3px 11px;
+}
+
+.iwak-page .submit {
+margin:0 0 3em;
+padding:22px 15px;
+border-top:1px solid #666666;
+background-color:#464646;
+}
+
+.iwak-page .ui-draggable-dragging {
+background-color:#bbbbff;
+width:100%;
+}
+
+.iwak-page .dock {
+padding:1px 2px;
+border-left:1px solid #e2e2e2;
+border-left:1px solid #e2e2e2;
+background-color:#f0f0f0;
+}
+
+.group-items .dock .inner {
+height:2px;
+border:1px solid #101010;
+}
+
+.group-rules .dock .inner {
+margin: 18px 25px 0;
+height:2px;
+background-color:#101010;
+}
+
+.iwak-page .main td {
+border-bottom:1px solid #e3e3e3;
+    background-color:#F0F0F0;
+    padding:8px 15px 15px;
+}
+
+.iwak-page .jquery-selectbox {
+position:relative;
+display:inline-block;
+margin:1px;
+padding:3px;
+border: 1px solid #cccccc;
+background-color:#fff;
+-khtml-border-radius: 4px;
+-moz-border-radius: 4px;
+-webkit-border-radius: 4px;
+border-radius: 4px;
+}
+
+    .filter-item .item-type {
+        width:80px;
+    }
+    
+    .filter-item .item-type .jquery-selectbox-list {
+        width:81px;
+    }
+
+    .featured-item .item-status,
+    .featured-item .item-type {
+        width:50px;
+    }
+    
+    .featured-item .item-status .jquery-selectbox-list,
+    .featured-item .item-type .jquery-selectbox-list {
+        width:51px;
+    }
+    
+    .iwak-page div.regular-select {
+        width:142px;
+    }
+    
+    .iwak-page div.regular-select .jquery-selectbox-list {
+        width:143px;
+    }
+
+    .iwak-page div.large-select {
+        width:372px;
+    }
+    
+    .iwak-page div.large-select .jquery-selectbox-list {
+        width:373px;
+    }
+    
+.iwak-page .listelementhover {
+background-color:#C5E7F6;
+}
+
+.iwak-page .jquery-selectbox-currentItem {
+line-height:1em;
+}
+
+.iwak-page .jquery-selectbox-moreButton  {
+background:transparent url(images/select.gif) repeat scroll 0 0;
+cursor:pointer;
+float:right;
+margin:0 1px;
+height:13px;
+width:13px;
+}
+
+.iwak-page .jquery-selectbox-list {
+background:none repeat scroll 0 0 #fff;
+border:1px solid #999999;
+display:none;
+left:0;
+overflow-x:hidden;
+overflow-y:auto;
+padding:1px 2px;
+position:absolute;
+top:21px;
+z-index:1000;
+height:120px;
+font-size:22px;
+line-height:1em;
+}
+
+.iwak-page .jquery-selectbox-item {
+cursor:default;
+display:block;
+font-size:50%;
+padding:0 2px;
+}
+
+.iwak-page .main .jquery-selectbox-moreButton {
+display:none;
+}
+
+.iwak-page .main .jquery-selectbox {
+border-color:transparent;
+background-color:transparent;
+}
+
+.iwak-page .main .active,
+.iwak-page .main .jquery-selectbox:hover {
+border-color:#cccccc;
+background-color:#fff;
+}
+
+.iwak-page .main .active .jquery-selectbox-moreButton,
+.iwak-page .main .jquery-selectbox:hover .jquery-selectbox-moreButton {
+display:block;
+}
+
+.iwak-page .main .inner {
+position:relative;
+float:left;
+width:100%;
+}
+
+.iwak-page .featured-item tr.depth-0,
+.iwak-page .testimonial-item tr.depth-0 {
+display:none;
+}
+
+.featured-item .column-0 {
+float:left;
+padding:4px 0 0;
+width:80px;
+height:24px;
+}
+
+.featured-item .column-1 {
+float:left;
+}
+
+.featured-item .column-1 .jquery-selectbox-currentItem {
+line-height:1.5em;
+}
+
+.featured-item .column-2 {
+position:absolute;
+right:66px;
+top:5px;
+width:80px;
+}
+
+.featured-item .column-3 {
+position:absolute;
+top:6px;
+right:60px;
+}
+
+.featured-item .column-4 {
+position:absolute;
+top:6px;
+right:10px;
+}
+
+.filter-item .main td {
+padding:18px 25px 0;
+height:30px;
+}
+
+.filter-item .column-0 {
+float:left;
+width:58px;
+padding-top:2px;
+color:#BE6EAC;
+}
+
+.filter-item .column-0:hover .iwak-toggle {
+display:block;
+}
+
+.filter-item .column-0 select {
+width:80px;
+}
+
+.filter-item .column-0 .icon {
+float:left;
+width:32px;
+height:32px;
+background:transparent url(images/include.png) no-repeat 0 0;
+}
+
+.filter-item .column-0 .icon-exclude {
+background-image:url(images/exclude.png);
+}
+
+.filter-item .column-0 .iwak-toggle {
+margin-left:2px;
+margin-top:14px;
+float:left;
+display:none;
+width:13px;
+height:18px;
+background:transparent url(images/toggle.png) no-repeat 0 0;
+}
+
+.filter-item .column-0 .iwak-toggle:hover {
+background-position:0 -18px;
+}
+
+.filter-item .column-1 {
+float:left;
+width:98px;
+margin:5px 0;
+}
+
+.filter-item .column-2 {
+float:left;
+margin:4px 0;
+}
+
+.filter-item .column-3 {
+position:absolute;
+top:3px;
+right:0;
+}
+
+.testimonial-item .depth-0 th {
+padding-left:30px;
+}
+
+.testimonial-item .column-0 {
+margin:10px 0 0 10px;
+}
+
+.testimonial-item .column-0 input {
+font-weight:bold;
+}
+
+.testimonial-item .column-1 {
+margin-left:10px;
+}
+
+.testimonial-item .column-1 textarea {
+font-style:italic;
+color:#666;
+}
+
+.testimonial-item .column-2 {
+position:absolute;
+top:6px;
+right:60px;
+}
+
+.testimonial-item .column-3 {
+position:absolute;
+top:6px;
+right:10px;
+}
+
+
+.widget-area-row .column-0 {
+float:left;
+margin-right:20px;
+}
+
+.widget-area-row .column-0 input {
+font-weight:bold;
+}
+
+.widget-area-row .column-1 {
+float:left;
+}
+
+.widget-area-row .column-1 input {
+font-style:italic;
+color:#666;
+}
+
+.widget-area-row .column-2 {
+position:absolute;
+top:6px;
+right:10px;
+}
+
+.column input, .column textarea {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.column input:hover, .column textarea:hover {
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.iwak-page .icon {
+cursor:pointer;
+display:block;
+width:18px;
+height:18px;
+}
+
+.iwak-page .icon-expand {
+background:transparent url(images/expand.png) no-repeat 0 0;
+}
+.iwak-page .icon-expand-disabled {
+background:transparent url(images/expand.png) no-repeat 0 -18px;
+}
+
+.iwak-page .icon-delete {
+background:transparent url(images/delete.png) no-repeat 0 0;
+}
+
+.iwak-page .icon-delete:hover {
+background:transparent url(images/delete.png) no-repeat 0 -18px;
+}
+
+.iwak-console {
+height:20px;
+padding:18px 13px 12px;
+border-top:1px solid #fff;
+border-left:1px solid #e2e2e2;
+border-right:1px solid #e2e2e2;
+background-color:#f0f0f0;
+text-align:right;
+}
+
+.iwak-page .item-type {
+font-size:11px;
+text-transform:uppercase;
+}
+    .featured-item .item-type {color:#666666;}
+    .filter-item .item-type {color:#999999;}
+
+.iwak-page .item-status {
+color:#101010;
+font-size:11px;
+}
+
+.iwak-page .item-title .jquery-selectbox-currentItem {
+font-weight:bold;
+font-size:12px;
+}
+    
+.iwak-add {
+padding:4px 10px;
+margin-right:10px;
+}
+
+.iwak-page .filter-item {
+background:none;
+}
+
+.filter-item tr.main td {
+border-bottom:none;
+}
+
+.group-rules .iwak-console {
+border-top: none;
+}
+
+.ipreview {
+position:relative;
+overflow:hidden;
+margin:25px 0 20px;
+}
+
+.favicon-preview {
+float:left;
+margin-left:4px;
+margin-right:10px;
+}
+
+.favicon-preview img {
+width:16px;
+height:16px;
+}
+
+.menubar-editor a {
+margin-right:5px;
+margin-bottom:10px;
+}
+
+.menubar-editor span.item, 
+.menubar-editor span.item-home, 
+.menubar-editor .safe-item {
+	display: block;
+	float: left;
+	-moz-border-radius: 4px;
+	padding: 3px 5px;
+	white-space: nowrap;
+}
+
+.menu-items {
+	background-color: #58636F;
+	border: 1px solid #c9c9c9;
+	color: #fff;
+	-moz-border-radius: 4px;
+	overflow: auto;
+	padding: 5px 10px;
+}
+
+.menu-items .selected { background-color: #D5D6D7; color: #58636F; }
+
+.page-items .selected, .cat-items .selected { background-color: #58636F; color: #fff; }
+
+.page-items, .cat-items {
+	background-color: #D5D6D7;
+	border: 1px dashed #58636F;
+	color: #58636F;
+	margin: 5px 1px;
+	overflow: auto;
+	padding: 5px;
+}
+
+.iwak-page .content {
+color:#666666;
+font-size:12px;
+line-height:19px;
+padding:11px 20px 10px;
+border-bottom:1px solid #fff;
+background:#dfdfdf url(images/content.gif) repeat-x 0 0;
+}
+
+h4.accordion-active { background: transparent; }
+
+.accordion {
+	border: 1px solid #cfcfcf;
+	margin-bottom: 2px;
+	-moz-border-radius: 4px;
+	position: relative;
+	width: 100%;
+}
+
+.accordion .delete {
+	background-position: -13px -48px;
+	cursor: pointer;
+	margin: 5px;
+}
+
+.accordion .delete:hover { background-position: -13px -64px; }
+
+.accordion h4 {
+	background-color: #dfdfdf;
+	font-weight: normal;
+	margin: 0;
+	padding: 5px;
+}
+
+.accordion textarea {
+	background: transparent;
+	border: none;
+	height: 230px;
+	margin: 0;
+	overflow: auto;
+	padding: 0 5px;
+	width: 100%;
+}
+
+.widget-icon {
+	background: transparent url(images/icons.png) no-repeat 0 0;
+	height: 16px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 16px;
+}
+
+.iwak-post-option {
+padding:10px 0;
+margin:0 6px;
+border-top:1px solid #eee;
+}
+
+.iwak-post-option:first-child {
+border:none;
+}

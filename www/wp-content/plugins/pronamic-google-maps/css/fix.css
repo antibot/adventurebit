@@ -1,0 +1,10 @@
+.entry-content .pgmm img , 
+.comment-content .pgmm img , 
+.widget .pgmm img ,
+.entry-content .pgm img , 
+.comment-content .pgm img , 
+.widget .pgm img {
+	background-color: transparent;
+
+	max-width: none;
+}

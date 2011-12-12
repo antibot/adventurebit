@@ -1,0 +1,24 @@
+/* CSS Fixs for IE 7.0 */
+
+/* Fix #2 - IE7 doesn't know inline-block */
+.iwak-widget-flickr .flickr_badge_image { display: inline; }
+
+/* Fix #3 - trigger hasLayout to get background image displayed, and padding/margin corrected, etc */
+.post .post-content,
+blockquote,
+.panes,
+.toggle { zoom: 1; }
+
+/* Fix #4 - incorrect divider height */
+.divider { line-height: 0px; font-size: 0px; }
+
+/* Fix #5 */
+#main-nav li li {
+	vertical-align: middle; /* fix IE7 bug - small extra space between list items */
+}
+
+/* Fix #7 - incorrect margin between gallery images */
+.post-content .gallery-item { float: none; display: inline; zoom: 1; }
+
+/* Fix #9 - comment fix */
+.comment { zoom: 1; }
