@@ -79,6 +79,11 @@ footer, header, hgroup, menu, nav, section {
   float: none;
 }
 
+#container #home a {
+  color: #000;
+  text-decoration: none;
+}
+
 #container #home #logotype {
   cursor: pointer;
   float: left;
