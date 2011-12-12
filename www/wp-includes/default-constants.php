@@ -157,7 +157,7 @@ function wp_cookie_constants( ) {
 	 * Should be exactly the same as the default value of SECRET_KEY in wp-config-sample.php
 	 * @since 2.5.0
 	 */
-	$wp_default_secret_key = 'впишите сюда уникальную фразу';
+	$wp_default_secret_key = 'put your unique phrase here';
 
 	/**
 	 * @since 2.0.0
