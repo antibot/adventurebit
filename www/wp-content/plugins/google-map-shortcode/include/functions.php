@@ -36,19 +36,19 @@ function gmshc_generate_map($map_points, $atts) {
 	  $output .= "<script type=\"text/javascript\">\n";
 	  $output .= "var map_points_".$canvas." =  new Array();\n";
 	  
-	  $i = 0;
+	  $i = 0;  	  
 	  		  
 	  foreach ($map_points as $point){	  	 
 	  
-	  	  $post_categories = wp_get_post_categories( $point->post_id );  
-		  $terms = implode(",",$post_categories);		   	
+	  	$post_categories = wp_get_post_categories( $point->post_id );  
+		  $terms = implode(",",$post_categories);		  
 		  
 		  list($lat,$lng) = explode(",",$point->ltlg);		  
 		  		  
 		  $output .= "map_points_".$canvas."[".$i."] = \n";
 		  $output .= "{\"address\":\"".$point->address."\",\n";
 		  $output .= "\"lat\":\"".$lat."\",\n";
-		  $output .= "\"lng\":\"".$lng."\",\n";
+		  $output .= "\"lng\":\"".$lng."\",\n";  
 		  
 		  $output .= "\"info\":\"".gmshc_get_windowhtml($point)."\",\n";
 		  
@@ -57,13 +57,15 @@ function gmshc_generate_map($map_points, $atts) {
 		  $i ++;
 		  
 	  }	  
-	  
+	                        
 	  $output .= "var options_".$canvas." = {\n";
-	  $output .= "'zoom':".$zoom.",\n";
+	  $output .= "'zoom':".$zoom.",\n";        
 	  $output .= "'markers':map_points_".$canvas.",\n";
 	  $output .= "'mapContainer':'".$canvas."',\n";
-	  $output .= "'focusType':'".$focus_type."',\n";			  
+	  $output .= "'focusType':'".$focus_type."',\n";		
+    $output .= "'center':'".$atts['center']."',\n";		  
 	  $output .= "'type':'".$type."',\n";
+	  
 	  
 	  switch ($focus) {
 		case "all" :  

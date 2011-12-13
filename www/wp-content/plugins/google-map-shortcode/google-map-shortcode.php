@@ -60,9 +60,9 @@ function get_gmshc_options ($default = false){
 							'type' => 'ROADMAP',
 							'animate' => true,
  							'focus_type' => 'open',
-							'version' => GMSHC_VERSION_CURRENT
+							'version' => GMSHC_VERSION_CURRENT,
+							'center' => '0, 0',
 							);
-							
     	
 	if ($default) {
 	update_option('gmshc_op', $gmshc_default);
@@ -70,6 +70,7 @@ function get_gmshc_options ($default = false){
 	}
 	
 	$options = get_option('gmshc_op');
+	
 	if (isset($options)){
 	    if (isset($options['version'])) {
 			$chk_version = version_compare(GMSHC_VERSION_CHECK,$options['version']);
@@ -80,6 +81,7 @@ function get_gmshc_options ($default = false){
 		}
 	}	
 	update_option('gmshc_op', $options);
+	
 	return $options;
 }
 
@@ -90,6 +92,7 @@ function get_gmshc_options ($default = false){
 function gmshc_head() {
 
 	$options = get_gmshc_options();
+	
 	$language = $options['language'];
 	
 	$gmshc_header =  "\n<!-- Google Map Shortcode Version ".GMSHC_VERSION_CHECK."-->\n";		
@@ -152,6 +155,8 @@ function gmshc_sc($atts) {
 	
 	global $post;
 	$options = get_gmshc_options();	
+
+	$center = $options['center'];
 	
 	$width = $options['width'];
 	$height = $options['height'];
@@ -188,7 +193,8 @@ function gmshc_sc($atts) {
 										'focus' => $focus,
 										'animate' => $animate,
 										'focus_type' => $focus_type, 
-										'canvas' => ''	
+										'canvas' => '',
+                    'center' => $center	
 										), $atts);	
 	extract($final_atts);		
 
@@ -229,6 +235,7 @@ function gmshc_sc($atts) {
 	
 		//create points for the current post_id	
 		$post_points = new GMSHC_Post_Map();
+		$post_points -> setCenter($center);
 		$post_points -> create_post_map($post->ID);	
 		$post_points -> load_points();
 		$map_points = $post_points->points;	 

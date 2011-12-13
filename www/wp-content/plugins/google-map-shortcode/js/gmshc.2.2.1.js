@@ -10,8 +10,9 @@ var gmshc = {};
 (function(){
 
 gmshc.Map = function(settings){
-		
+	
 	this.markers = settings.markers;
+	this.center = settings.center.split(',') || [this.markers[0].lat, this.markers[0].lng];
 	this.mapContainer = document.getElementById(settings.mapContainer);
 	this.zoom = (typeof settings.zoom != "undefined")? settings.zoom : 10;	
 	this.type = (typeof settings.type != "undefined")? settings.type : "ROADMAP";
@@ -38,13 +39,11 @@ gmshc.Map = function(settings){
 
 gmshc.Map.prototype.init = function() {
 
-	var firstLat = this.markers[0].lat;
-	var firstLong = this.markers[0].lng;
-	var firstLatLng = new google.maps.LatLng(firstLat, firstLong);
+	var firstLat = this.center[0];
+	var firstLong = this.center[1];
 	
 	this.map = new google.maps.Map(this.mapContainer, {
 	  zoom: this.zoom,
-	  center: firstLatLng,
 	  mapTypeId: google.maps.MapTypeId[this.type]
 	});
 	
@@ -98,8 +97,7 @@ gmshc.Map.prototype.init = function() {
     }
 
     // Center map.
-	this.map.setCenter(new google.maps.LatLng(
-		avgLat / this.pointsNumber, avgLng / this.pointsNumber));
+	this.map.setCenter(new google.maps.LatLng(parseFloat(firstLat), parseFloat(firstLong)));
 	
     if(this.circle)  this.Play();
 	if(this.focusPoint != null) {
@@ -144,7 +142,7 @@ gmshc.Map.prototype.Rotate = function(){
 		if (this.focusType == "center"){
 			if (this.userInfoWindowOpen) return;
 			var location = this.markers[this.openItem];
-			this.map.setCenter(new google.maps.LatLng(location.lat, location.lng));
+			//this.map.setCenter(new google.maps.LatLng(location.lat, location.lng));
 			if (this.animateMarkers) {
 				this.StopAllAnimations();
 				this.ToggleAnimation(this.markersObj[this.openItem],"BOUNCE");
@@ -204,7 +202,7 @@ gmshc.Map.prototype.Center = function(point){
 	if (this.markersObj[point].getVisible()) {
 		    if(this.openWindow != null) this.openWindow.close();
 			var location = this.markers[point];
-			this.map.setCenter(new google.maps.LatLng(location.lat, location.lng));
+			//this.map.setCenter(new google.maps.LatLng(location.lat, location.lng));
 			if (this.animateMarkers) {
 				this.StopAllAnimations();
 				this.ToggleAnimation(this.markersObj[point],"BOUNCE");

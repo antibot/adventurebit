@@ -101,6 +101,12 @@ p img {
 	max-width: 100%;
 }
 
+a.nodecor,
+a.nodecor:hover {
+  background: none !important;
+  border: none !important;
+}
+
 img.centered {
 	display: block;
 	margin-left: auto;
