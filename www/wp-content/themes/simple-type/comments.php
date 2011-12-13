@@ -1,163 +1,58 @@
-<?php
-
-	if ('comments.php' == basename($_SERVER['SCRIPT_FILENAME']))
-
-		die ('Please do not load this page directly. Thanks!');
-
-        if (!empty($post->post_password)) {
-
-            if ($_COOKIE['wp-postpass_'.$cookiehash] != $post->post_password) {
-
-				?>
-
-	<p class="nocomments"><?php _e("This post is password protected. Enter the password to view comments."); ?><p>
-
-	<?php
-
-	return;
-
-        }
-
-     }
-
-	$oddcomment = "alt";
-
-?>
-
-<!-- You can start editing here. -->
-
-<h3>There's <?php comments_number('0 Comment','1 Comment','% Comments'); ?></h3>
-
-
-
-<a name="comments"></a>
-
-<?php if ($comments) : ?>
-
-
-
-<ul class="comment_list">
-
-	<?php foreach ($comments as $comment) : ?>
-
-	<?php $comment_type = get_comment_type(); ?>
-
-	<?php if($comment_type == 'comment') { ?>
-
-		<li class="<?php echo $oddcomment; ?>" id="comment-<?php comment_ID() ?>"><a name="comment-<?php comment_ID() ?>"></a>
-
-
-
-	<span class="comment_author"><?php comment_author_link() ?></span><br/>
-
-	<span class="comment_meta"><?php comment_date('F jS, Y') ?> at <?php comment_time() ?></span>
-
-	<div class="comments_entry">
-
-	<?php comment_text() ?>
-
-	</div>
-
-		</li>
-
-	<?php /* Changes every other comment to a different class */	
-
-	if ('alt' == $oddcomment) $oddcomment = '';
-
-	else $oddcomment = 'alt';
-
-	?>
-
-	<?php } else { $trackback = true; } /* End of is_comment statement */ ?>	
-
-	<?php endforeach; /* end for each comment */ ?>
-
-</ul>
-
-<?php if ($trackback == true) { ?>
-
-<h3>Who Linked To This Post?</h3>
-
-<ol>
-
-	<?php foreach ($comments as $comment) : ?>
-
-	<?php $comment_type = get_comment_type(); ?>
-
-	<?php if($comment_type != 'comment') { ?>
-
-	<li><?php comment_author_link() ?></li>
-
-	<?php } ?>
-
-	<?php endforeach; ?>
-
-</ol>
-
-<?php } ?>
-
-<?php else : // this is displayed if there are no comments so far ?>
-
-<?php if ('open' == $post-> comment_status) : ?> 
-
-	<!-- If comments are open, but there are no comments. -->
-
-	 <?php else : // comments are closed ?>
-
-	<!-- If comments are closed. -->
-
-	<p class="nocomments">Comments are closed on this post.</p>
-
-	<?php endif; ?>
-
-<?php endif; ?>
-
-<?php if ('open' == $post-> comment_status) : ?>
-
-
-
-<h3>Share your thoughts&#44; leave a comment&#33;</h3>
-
-
-
-<form action="<?php echo get_settings('siteurl'); ?>/wp-comments-post.php" method="post" id="comment_form">
-
-
-
-<?php if ( $user_ID ) : ?>
-
-
-
-	<p>You are currently logged in as <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a href="<?php echo get_option('siteurl'); ?>/wp-login.php?action=logout" title="Log out of this account"">Logout &raquo;</a></p>
-
-
-
-		<?php else : ?>
-
-
-
-	<p><input type="text" class="text_input" name="author" id="author" value="<?php echo $comment_author; ?>" tabindex="1" /><label for="author">Name (required)</label></p>
-
-
-
-	<p><input type="text" class="text_input" name="email" id="email" value="<?php echo $comment_author_email; ?>" tabindex="2" /><label for="email">Email (required)</label></p>
-
-
-
-	<p><input type="text" class="text_input" name="url" id="url" value="<?php echo $comment_author_url; ?>" tabindex="3" /><label for="url">Website URL</label></p>
-
-
-
-<?php endif; ?>
-
-
-
-<p><textarea class="text_area" name="comment" id="comment" rows="8" cols="10" tabindex="4"></textarea></p>	
-
-		<p><input name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment" /><input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>" />	</p>
-
-</form>
-
-<?php // if you delete this the sky will fall on your head
-
-endif; ?>
+<?php if('open' == $post->comment_status):?>
+  
+  <div class="post-comments">
+  <?php if($comments):?>
+    <h3 class="comments-count">Comments: <?php comments_number('0', '1', '%'); ?></h3>
+   
+    <ul>
+    <?php wp_list_comments('type=comment&callback=adventurebit_comments'); ?>  
+    </ul> 
+  <?php endif; ?> 
+   
+  <?php global $commenter; $commenter = wp_get_current_commenter(); ?>
+  
+  <div id="respond">
+    <h3 id="reply-title">Leave a comment</h3>  
+    <form action="<?php echo site_url( '/wp-comments-post.php' ); ?>" method="post" id="comment-form">  
+      <?php do_action( 'comment_form_top' ); ?>  
+      
+        <div id="comment-fields">
+          <table>
+            <?php if ( !is_user_logged_in() ) : ?>  
+            <tr>
+              <td id="author">
+                <input name="author" type="text" value="<?php echo $commenter['comment_author']; ?>" />
+              </td>
+              <td id="email">
+                <input name="email" type="text" value="<?php echo $commenter['comment_author_email']; ?>" /> 
+              </td>
+            </tr>
+            <?php endif; ?> 
+            <tr>
+              <td colspan="2" class="comment">
+                <textarea id="comment" name="comment" cols="45" rows="8"></textarea>
+              </td>
+            </tr>
+          </table> 
+            
+          <table>
+            <tr>
+              <td width="100%">
+                <?='<a class="cancel-comment-reply-link">Click here to cancel reply.</a>'.get_cancel_comment_reply_link(' '); ?>
+              </td>
+              <td>
+              <button name="submit" id="submit-comment">Send</button>
+              </td>
+            </tr>
+          </table>        
+        </div>
+        
+        <?php comment_id_fields( $post_id ); ?>  
+      <?php do_action( 'comment_form', $post_id ); ?>  
+    </form>
+  </div>
+    
+  </div> 
+<?php else:?>
+  <p class="nocomments">Comments are closed on this post.</p>
+ <?php endif; ?> 

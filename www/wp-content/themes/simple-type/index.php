@@ -27,13 +27,18 @@
 
 <?php endwhile; ?>
 
+
 <?php else: ?>
 
 <?php endif; ?>
 
 <div style="clear:both;"></div>
 
-<div class="postnav"><?php posts_nav_link(); ?></div>
+<?php 
+  if(function_exists('wp_paginate')) {
+    wp_paginate();
+  } 
+?>
 
 </div>
 

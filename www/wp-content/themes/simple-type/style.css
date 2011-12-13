@@ -133,6 +133,15 @@ img.alignleft {
 	float: left;
 }
 
+hr {
+  border: none;
+  background: none;
+}
+
+hr.dotted {
+  border-bottom: 1px dashed #CCCCCC;
+}
+
 /**--Header--**/
 
 #header {
@@ -693,3 +702,11 @@ ul.comment_list li.author_comment {
 	font-family: 'Trebuchet MS', Verdana, Helvetica, Arial, sans-Serif;
 	color:#000;
 }
+
+/* comments
+------------------------------------------------------------------------------*/
+
+.post-comments ul {
+  list-style: none;
+}
+

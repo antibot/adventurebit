@@ -32,8 +32,11 @@
     }
     wp_head();
 ?>
- 
+
 <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/scripts.js"></script>
 
 </head>
 

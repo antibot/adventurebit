@@ -1,0 +1,8 @@
+<div style="padding:.5em;border:1px dotted grey;margin-bottom:.5em;line-height:1.1em;text-align:left;" class="spsn-container">
+<p style="padding:0;margin:0;font-size:.9em;" class="spsn-sponsor-heading"><em style="color:green;">Ban on Passively Loading Any Type of External Sponsorship Message &raquo;</em></p>
+<p style="padding:.2em;margin:0;" class="spsn-sponsor-text">Along with several other WordPress plugins jointly representing 2.3 million aggregate downloads as of November 2011, this plugin was threatened with expulsion from the plugin repository for automatic passive loading of sponsorship messages from an external server. In the face of <a href="http://gregsplugins.com/lib/2011/11/26/automattic-bullies/">these threats against participating plugin authors</a>, development of this plugin will no longer be supported by sponsorship messages. If this ban is fairly, uniformly and impartially applied, you should no longer see any external advertising of any kind in a WordPress.org-hosted plugin unless you have explicitly opted in to seeing it.
+</p>
+</div>
+<div style="margin:12px auto; text-align:center">
+&raquo; <a href="http://gregsplugins.com/">Information and FAQs on Greg&rsquo;s Plugins</a> &laquo;
+</div>

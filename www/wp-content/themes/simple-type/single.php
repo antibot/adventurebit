@@ -34,6 +34,12 @@
 
 <?php endwhile; ?>
 
+<?php 
+  if(function_exists('wp_paginate')) {
+    wp_paginate();
+  } 
+?>
+
 <?php else: ?>
 
 <?php endif; ?>
