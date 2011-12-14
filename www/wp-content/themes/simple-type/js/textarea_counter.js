@@ -42,7 +42,7 @@
     .bind('blur', function(event){limitTextAreaByCharacterCount();})
     .bind('paste', function(event){setTimeout(function(){limitTextAreaByCharacterCount();}, 10);});
 		
-		
+		    
 		function limitTextAreaByCharacterCount(){
 			charLeftInfo.html(countByCharacters());
 			//function call back
@@ -160,5 +160,8 @@
 			var word_count = cleanedWordString.length-1;
 			return word_count;
 		}
+		
+		limitTextAreaByCharacterCount();
+		
 	};  
 })(jQuery); 

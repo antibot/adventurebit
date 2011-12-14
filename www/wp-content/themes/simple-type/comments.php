@@ -30,7 +30,7 @@
             </tr>
             <?php endif; ?> 
             <tr>
-              <td colspan="2" class="comment">
+              <td colspan="2">
                 <textarea id="comment" name="comment" cols="45" rows="8"></textarea>
                 <div class="comment-statistics">
                 </div>
@@ -54,7 +54,14 @@
     </form>
   </div>
     
-  </div> 
+  </div>
+  
+<?php 
+  if(function_exists('wp_paginate_comments')) {
+    wp_paginate_comments();
+  } 
+?>
+   
 <?php else:?>
   <p class="nocomments">Comments are closed on this post.</p>
  <?php endif; ?> 

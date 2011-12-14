@@ -19,7 +19,7 @@ html {
 body {
 	background: #ffffff;
 	width: 960px;
-	color:#333;
+	color: #000;
 	line-height: 24px;
 	font-size: 16px;
 	font-family: Georgia, 'Times New Roman', Times, serif;
@@ -71,7 +71,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ul, ol {
-	color: #ccc;
+	color: #333;
 	margin: 12px;
 	padding: 8px;
 }
@@ -203,6 +203,8 @@ hr.dotted {
 	border-bottom: 1px dashed #cccccc;
 }
 
+/*
+
 .post a {
 	text-decoration: none;
 	color: #000000;
@@ -229,6 +231,8 @@ hr.dotted {
 	text-decoration: none;
 	border-bottom: 1px solid #f60;
 }
+
+*/
 
 .post a.more-link {
   border: 0;
@@ -368,6 +372,10 @@ hr.dotted {
 	font-size: 28px;
 	margin:0;
 	padding:0;
+}
+
+.post .navigation {
+  margin-bottom: 20px;
 }
 
 /**--Navigation--**/
@@ -726,17 +734,35 @@ ul.comment_list li.author_comment {
 
 }
 
-/*
-.comment{
-  border: 1px solid #ddd;
-  margin: 10px 10px 0 10px;
+.comment {
+  border: 1px dashed #CCC;
+  margin: 10px;
 }
-*/
-      
+
+.comment.depth-1 {
+  background-color: #fcfcfc;
+}
+
+.comment.depth-2 {
+  background-color: #f6f6f6;
+}
+
+.comment.depth-3 {
+  background-color: #f0f0f0;
+}
+
+.comment.depth-4 {
+  background-color: #ececec;
+}
+
+.comment.depth-5 {
+  background-color: #e6e6e6;
+}
+  
 .comment-body{
-  border: 1px solid #ddd;  
+  /border: 1px solid #ddd;  
   margin: 10px 0;
-}   
+}        
           
 .comment-meta {
   position: relative;  
@@ -794,10 +820,12 @@ ul.comment_list li.author_comment {
   margin: 0;
   width: 100%;
   display: block;
+  border: 1px solid #ccc;
 }
 
 #comment-form input {
   width: 50%;
+  border: 1px solid #ccc;
 } 
 
 #comment-form table,
@@ -822,6 +850,7 @@ ul.comment_list li.author_comment {
   clear: both;
   float: none;
   overflow: hidden;
+  margin-bottom: 5px;
 }
 
 .comment-cancel-reply {
@@ -830,4 +859,8 @@ ul.comment_list li.author_comment {
 
 #submit-comment {
   float: right;
+}
+
+#respond {
+  margin: 0 10px;
 }

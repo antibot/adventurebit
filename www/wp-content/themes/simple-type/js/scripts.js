@@ -25,7 +25,6 @@ jQuery.fn.defaultValue = function(text){
   	});
   
   	$(this).parents("form").each(function() {
-  		//Bind parent form submit
   		$(this).submit(function() {
   			if(fld_current.value==text) {
   				fld_current.value='';
@@ -43,9 +42,28 @@ $(document).ready(function(){
   COMMENT.cancel_reply = $('a.cancel-comment-reply-link');
   COMMENT.reply = $('a.comment-reply-link');
   COMMENT.form = $('#comment-form');
-  COMMENT.text = COMMENT.form.find('textarea');
+  COMMENT.comment = COMMENT.form.find('textarea');
   COMMENT.author = COMMENT.form.find('#author input');
   COMMENT.email = COMMENT.form.find('#email input');
+  COMMENT.submit = COMMENT.form.find('#submit-comment'); 
+  COMMENT.fields = COMMENT.form.find('textarea, input'); 
+  COMMENT.border_color = COMMENT.comment.css('border-color'); 
+  COMMENT.error = function() {     
+    COMMENT.fields.css('border-color', 'red');
+    COMMENT.form.effect("bounce", {
+      times: 5,
+      direction: 'right',
+      distance: 10
+    },100,function() {
+    });
+    COMMENT.submit.removeAttr('disabled');
+    
+    COMMENT.fields.focus(function(){
+      COMMENT.fields.css('border-color', COMMENT.border_color);
+      //$(this).css('border-color', COMMENT.border_color);
+    });
+    
+  }
   
   COMMENT.cancel_reply.hide();  
    
@@ -66,10 +84,37 @@ $(document).ready(function(){
     'displayFormat' : '#input/#max | #words words'
 	}
 
-	COMMENT.text.textareaCount(options);
-	COMMENT.text.TextAreaResizer();
+	COMMENT.comment.textareaCount(options);
+	COMMENT.comment.TextAreaResizer();
 	
 	COMMENT.author.defaultValue('Name');
   COMMENT.email.defaultValue('E-mail');
+ 
+  COMMENT.form.submit(function(){
+
+    COMMENT.submit.attr('disabled', 'disabled');
+    COMMENT.fields.blur();
+    
+    var obj = COMMENT.form.serialize();
+  
+    jQuery.ajax({
+      type: 'POST',
+      url: COMMENT.form.attr('action'),
+      data: obj,
+      success: function(data) {
+        if(data == 'success') {
+          location.reload();
+        } else {
+          COMMENT.error();    
+        }
+      },
+      error: function(data) {
+        COMMENT.error();  
+      }
+    });   
+      
+    return false;
+   
+  });
   	
 });

@@ -39,6 +39,7 @@
 
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/textarea_counter.js"></script>
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/textarea_resizer.js"></script>
+<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/effects.js"></script>
 
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/scripts.js"></script>
 
