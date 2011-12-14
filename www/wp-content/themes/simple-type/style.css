@@ -27,6 +27,11 @@ body {
 	padding: 15px 0;
 }
 
+textarea, input, button, a {
+  outline: none;
+  resize: none;
+}
+
 #container {
 	width: 960px;
 	margin: 0;
@@ -707,6 +712,122 @@ ul.comment_list li.author_comment {
 ------------------------------------------------------------------------------*/
 
 .post-comments ul {
-  list-style: none;
+  margin: 0;
+  padding: 0; 
+  color: #000; 
+  list-style: none
 }
 
+.post-comments ul.children {
+  margin-left: 20px;
+}
+
+.post-comments ul li {
+
+}
+
+/*
+.comment{
+  border: 1px solid #ddd;
+  margin: 10px 10px 0 10px;
+}
+*/
+      
+.comment-body{
+  border: 1px solid #ddd;  
+  margin: 10px 0;
+}   
+          
+.comment-meta {
+  position: relative;  
+  margin: 5px; 
+} 
+
+.comment-reply {
+  float: right;
+}
+
+.comment-edit {
+  float: left;
+}
+
+.comment-number {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  color: #555;
+}
+
+.comment-author span {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #555;
+}
+
+.comment-text p {
+
+}  
+
+.comment-buttons {
+  float: none;
+  clear: both;
+  overflow: hidden;
+}
+
+.cancel-comment-reply-link {
+  cursor: pointer;
+}
+
+/* comments
+------------------------------------------------------------------------------*/   
+
+#comment-form table {
+  width: 100%;
+}
+
+#comment-form textarea {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: block;
+}
+
+#comment-form input {
+  width: 50%;
+} 
+
+#comment-form table,
+#comment-form tbody,
+#comment-form tr,
+#comment-form td {
+  display: block;
+  width: 100%;
+}             
+
+#comment-form .grippie {
+  background: #EEEEEE url(images/grippie.png) no-repeat scroll center 2px;
+  border: 1px solid #ddd;
+  cursor: s-resize;
+  height: 9px;
+  overflow: hidden;  
+  margin: 0;  
+  width: 100%;
+}
+
+.comment-reply-submit {
+  clear: both;
+  float: none;
+  overflow: hidden;
+}
+
+.comment-cancel-reply {
+  float: left;
+}
+
+#submit-comment {
+  float: right;
+}

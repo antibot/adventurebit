@@ -13,28 +13,42 @@ register_nav_menu('main', 'Главное меню');
    
 function adventurebit_comments($comment,$args,$depth)
 {
-  $GLOBALS['comment'] = $comment; ?>
+  $GLOBALS['comment'] = $comment; ?>     
   <li <?php comment_class(); ?> id="li-comment-<?php comment_ID() ?>">
   <div class="comment-body-left">
   <div class="comment-body-right">
-    <div class="comment-body">
     <div id="comment-<?php comment_ID(); ?>" class="comment-content">
-    <?php comment_text(); ?> 
-    </div>
-      <div class="comment-info">
-      <a class="post-info number"><?php echo gtcn_comment_numbering($comment->comment_ID,$args); ?></a>
-      <a href="<?php comment_link( $comment->comment_ID ) ?>" class="post-date"><?php comment_date('F d, Y at G:i'); ?></a>
-      <a <?php $url=get_comment_author_url( $comment->comment_ID ); echo !empty($url)?"href=\"$url\"":''; ?> class="post-author"><?php comment_author( $comment->comment_ID ); ?></a>
-      <?php edit_comment_link('Edit', '<span class="post-edit">', '</span>'); ?>
-      <?php comment_reply_link( array_merge( $args, array
-      (
-      'depth' => $depth, 
-      'max_depth' => $args['max_depth'],
-      'before' => '<span class="post-info comments">', 
-      'after' => '</span>',
-      )
-      )); ?>
-    </div>
+    <div class="comment-body">
+      <div class="comment-meta">  
+        <div class="comment-author">
+          <span><?= comment_author( $comment->comment_ID ); ?></span> says:
+        </div>
+        <div class="comment-date">
+          on <?= comment_date('F d \a\t H:i:s'); ?>
+        </div>
+        <div class="comment-number">
+           <?= gtcn_comment_numbering($comment->comment_ID,$args); ?> 
+        </div>
+        
+        <div class="comment-text">
+           <?= comment_text(); ?> 
+        </div>
+        
+        <div class="comment-buttons">
+          <?= edit_comment_link('Edit', '<div class="comment-edit">', '</div>'); ?>
+          
+          <?= comment_reply_link( array_merge( $args, array (
+              'depth' => $depth, 
+              'max_depth' => $args['max_depth'],
+              'before' => '<div class="comment-reply">', 
+              'after' => '</div>',
+            )
+            )); 
+          ?>
+        </div>
+        
+      </div>
+      </div>
     </div>
   </div>
   </div>

@@ -7,6 +7,7 @@
     <ul>
     <?php wp_list_comments('type=comment&callback=adventurebit_comments'); ?>  
     </ul> 
+    
   <?php endif; ?> 
    
   <?php global $commenter; $commenter = wp_get_current_commenter(); ?>
@@ -31,20 +32,21 @@
             <tr>
               <td colspan="2" class="comment">
                 <textarea id="comment" name="comment" cols="45" rows="8"></textarea>
+                <div class="comment-statistics">
+                </div>
               </td>
             </tr>
           </table> 
             
-          <table>
-            <tr>
-              <td width="100%">
-                <?='<a class="cancel-comment-reply-link">Click here to cancel reply.</a>'.get_cancel_comment_reply_link(' '); ?>
-              </td>
-              <td>
+          <div class="comment-reply-submit">
+            <div class="comment-cancel-reply">
+              <?='<a class="cancel-comment-reply-link">Click here to cancel reply.</a>'.get_cancel_comment_reply_link(' '); ?>
+            </div>
+            <div>
               <button name="submit" id="submit-comment">Send</button>
-              </td>
-            </tr>
-          </table>        
+            </div>
+          </div>  
+              
         </div>
         
         <?php comment_id_fields( $post_id ); ?>  
