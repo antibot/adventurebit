@@ -41,7 +41,7 @@ class subscribe2_widget extends mijnpress_plugin_framework
 	{
 		$options = get_option('plugin__subscribe2_widget');
 		
-		$html = '<div>'.stripslashes($options['title']).'<div>[subscribe2]</div></div>';
+		$html = '<li id="subscribe" class="widget widget_subscribe"><h2>'.stripslashes($options['title']).'</h2><div style="margin-bottom: 30px;">[subscribe2]</div></li>';
 		echo do_shortcode($html);
 	}
 

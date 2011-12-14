@@ -2353,7 +2353,7 @@ class s2class {
 		echo "<textarea rows=\"9\" cols=\"60\" name=\"mailtext\">" . stripslashes($this->subscribe2_options['mailtext']) . "</textarea><br /><br />\r\n";
 		echo "</td><td valign=\"top\" rowspan=\"3\">";
 		echo "<p class=\"submit\"><input type=\"submit\" class=\"button-secondary\" name=\"preview\" value=\"" . __('Send Email Preview', 'subscribe2') . "\" /></p>\r\n";
-		echo "<h3>" . __('Message substitutions', 'subscribe2') . "</h3>\r\n";
+		echo "<h2>" . __('Message substitutions', 'subscribe2') . "</h2>\r\n";
 		echo "<dl>";
 		echo "<dt><b><em style=\"color: red\">" . __('IF THE FOLLOWING KEYWORDS ARE ALSO IN YOUR POST THEY WILL BE SUBSTITUTED' ,'subscribe2') . "</em></b></dt><dd></dd>\r\n";
 		echo "<dt><b>{BLOGNAME}</b></dt><dd>" . get_option('blogname') . "</dd>\r\n";
