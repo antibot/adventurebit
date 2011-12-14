@@ -18,8 +18,12 @@
 			displayFormat: '#input characters | #words words'
 		};  
 		var options = $.extend(defaults, options);
-		
+		            
 		var container = $(this);
+		
+		if(!container.size()) {
+      return;
+    }
 		
 		$("<div class='charleft'>&nbsp;</div>").insertAfter(container);
 		
@@ -53,8 +57,8 @@
 		}
 		
 		function countByCharacters(){
-			var content = container.val();
-			var contentLength = content.length;
+			var content = container.val();    
+			var contentLength = content.length;   
 			
 			//Start Cut
 			if(options.maxCharacterSize > 0){
@@ -99,7 +103,7 @@
 				numWords = countWord(getCleanedWordString(container.val()));
 			}
 			
-			return formatDisplayInfo();
+			return formatDisplayInfo();   
 		}
 		
 		function formatDisplayInfo(){
@@ -136,13 +140,13 @@
 			return false;
 		}
 		
-		function getNewlineCount(content){
-			var newlineCount = 0;
+		function getNewlineCount(content){   
+			var newlineCount = 0;     
 			for(var i=0; i<content.length;i++){
 				if(content.charAt(i) == '\n'){
 					newlineCount++;
 				}
-			}
+			}  
 			return newlineCount;
 		}
 		
