@@ -53,6 +53,9 @@ function adventurebit_comments($comment,$args,$depth)
   </div>
   </div>
 <?php
-}   
+}
+
+
+   
     
 ?>
