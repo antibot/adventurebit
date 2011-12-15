@@ -892,6 +892,10 @@ ul.comment_list li.author_comment {
   margin-bottom: 0;
 }   
 
+.widget.widget_inout {
+  margin-bottom: 30px;
+}
+
 /* Search Form
 ------------------------------------------------------------------------------*/  
 

@@ -7,7 +7,9 @@ Author: Selikhov Dmitry
 Version: 1.0
 Author URI: http://adventurebit.com/
 */
-
+    
+include_once 'modules/form.php';    
+    
 function files() {
 
   $styleUrl = plugins_url('css/style.css', __FILE__);
@@ -22,29 +24,68 @@ function files() {
   if(file_exists($scriptFile)) {
     wp_register_script('inout_js', $scriptUrl); 
     wp_enqueue_script('inout_js');
-  } 
+  }
+  
+  $options = get_option('inout');
+  $type = $options['type'];  
+  $redirect = $options['redirect'];
+  
+  ?>
+  <script>
+    var INOUT_TYPE = '<?= $type ?>';
+    var INOUT_REDIRECT = '<?= $redirect ?>';
+  </script>
+  <?php
 
 }
  
 add_action('wp_footer', 'files'); 
  
 function inout()
-{
-  return '';  
+{ 
 }
  
-function widget_inout($args) {
-  extract($args);
-  
+
+/* Shortcode
+------------------------------------------------------------------------------*/ 
+
+function inout_shortcode($args) {
+  echo FORM_CONTENT();  
+}
+
+add_shortcode('easy_in_up', 'inout_shortcode');
+
+/* Widget
+------------------------------------------------------------------------------*/ 
+ 
+function widget_inout_content($args) {
+
   $options = get_option('inout');
-  $title = $options['title'];  
-     
-  echo $before_widget;
-  echo $before_title;
-  echo $title;
-  echo $after_title;
-  echo inout();
-  echo $after_widget;
+  $type = $options['type']; 
+
+  switch($type) {
+    case 'dialog': 
+    break; 
+    
+    case 'list': 
+    break; 
+    
+    case 'shortcode': 
+    break;
+    
+    default:
+      extract($args);
+    
+      $title = $options['title'];  
+         
+      echo $before_widget;
+      echo $before_title;
+      echo $title;
+      echo $after_title;
+      echo FORM_CONTENT();
+      echo $after_widget;
+    break;
+  }
 }
 
 function widget_inout_control() {
@@ -54,11 +95,13 @@ function widget_inout_control() {
     'registration' => 'on',
     'authorization' => 'on',
     'exit' => 'on',
-    'type' => 'dialog'
+    'type' => 'sidebar',
+    'redirect' => ''
   ));
   
   if(isset($_POST['inout-nonce'])) {
     $options['title'] = $_POST['inout-title'];
+    $options['redirect'] = $_POST['inout-redirect'];
     
     $options['registration'] = $_POST['inout-registration'];
     $options['authorization'] = $_POST['inout-authorization'];
@@ -74,6 +117,13 @@ function widget_inout_control() {
   <label for="inout-title">Title:</label>
 </div>
 <input class="widefat" type="text" id="inout-title" name="inout-title" maxlength="30" value="<?= $options['title'] ?>" />
+
+<p>
+  <div>
+    <label for="inout-redirect">Redirect to:</label>
+  </div>   
+  <input class="widefat" type="text" id="inout-redirect" name="inout-redirect" maxlength="100" value="<?= $options['redirect'] ?>" /> 
+</p>
 
 <p>
   <div>
@@ -120,7 +170,7 @@ function widget_inout_control() {
 <?php
 }
  
-register_sidebar_widget(__('Easy Registration/Authorization'), 'widget_inout', 'inout');   
+register_sidebar_widget(__('Easy Registration/Authorization'), 'widget_inout_content', 'widget_inout');   
 register_widget_control(__('Easy Registration/Authorization'), 'widget_inout_control');   
 
 add_action('plugins_loaded', 'inout');

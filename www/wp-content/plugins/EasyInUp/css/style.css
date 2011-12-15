@@ -1,3 +1,36 @@
-body {
+/*
+Plugin Name: Easy Registration/Authorization
+Plugin URI: http://adventurebit.com/
+Description: Easy Registration/Authorization in wordpress
+Author: Selikhov Dmitry
+Version: 1.0
+Author URI: http://adventurebit.com/
+*/
+
+
+.widget_inout {
 
 }
+
+.widget_inout a {
+  cursor: pointer;
+  display: block;
+}
+
+.widget_inout button {
+  cursor: pointer;
+}
+
+.widget_inout .inout_exit .inout_exit_link {
+ 
+}
+
+.widget_inout .inout_auth .inout_reg_link,
+.widget_inout .inout_auth .inout_forgot_link {
+
+}
+
+.widget_inout .inout_reg .inout_auth_link {
+
+}
+
