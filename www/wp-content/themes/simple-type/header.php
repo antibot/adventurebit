@@ -55,6 +55,7 @@
 	
 	<div id="menu">
 	 <?php wp_nav_menu('menu=main'); ?>
+	 <?php get_search_form(); ?>
 	</div>
 	
   <div class="breadcrumbs">
@@ -63,7 +64,7 @@
       bcn_display();
     }
   ?>
-</div>
+  </div>
 
 </div>
 

@@ -383,6 +383,13 @@ hr.dotted {
 #menu {
   clear: both;
   float: none;
+  position: relative;
+}
+
+#menu #searchform {
+  position: absolute;
+  right: 15px;
+  top: 5px;
 }
 
 ul.menu {
@@ -759,8 +766,7 @@ ul.comment_list li.author_comment {
   background-color: #e6e6e6;
 }
   
-.comment-body{
-  /border: 1px solid #ddd;  
+.comment-body {
   margin: 10px 0;
 }        
           
@@ -808,7 +814,7 @@ ul.comment_list li.author_comment {
   cursor: pointer;
 }
 
-/* comments
+/* comments form
 ------------------------------------------------------------------------------*/   
 
 #comment-form table {
@@ -850,7 +856,6 @@ ul.comment_list li.author_comment {
   clear: both;
   float: none;
   overflow: hidden;
-  margin-bottom: 5px;
 }
 
 .comment-cancel-reply {
@@ -859,8 +864,43 @@ ul.comment_list li.author_comment {
 
 #submit-comment {
   float: right;
+  margin-bottom: 5px;
 }
 
 #respond {
   margin: 0 10px;
+}
+
+/* widgets
+------------------------------------------------------------------------------*/  
+
+.widget.widget-simpletags {
+  margin-bottom: 30px;
+}
+
+.widget_sideblog .title a {
+  font-size: 16px;
+}
+
+.widget_sideblog ul li {
+  border-bottom: 1px dashed #ccc;
+  margin-bottom: 5px;
+}
+
+.widget_sideblog ul li:last-child {
+  border: none;
+  margin-bottom: 0;
+}   
+
+/* Search Form
+------------------------------------------------------------------------------*/  
+
+#searchform #searchsubmit {
+  background: url(images/search.png) no-repeat center center;
+  border: none;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  top: -2px;
+  cursor: pointer;
 }

@@ -6,9 +6,9 @@ class S2_Form_widget extends WP_Widget {
 	function S2_Form_widget() {
 		$widget_ops = array('classname' => 's2_form_widget', 'description' => __('Sidebar Widget for Subscribe2', 'subscribe2') );
 		$control_ops = array('width' => 250, 'height' => 300);
-		$this->WP_Widget('s2_form_widget', __('Subscribe2 Widget'), $widget_ops, $control_ops);
+		$this->WP_Widget('s2_form_widget', __('Subscribe2 Widget', 'subscribe2'), $widget_ops, $control_ops);
 	}
-	
+
 	/**
 	Displays the Widget
 	*/
@@ -20,9 +20,13 @@ class S2_Form_widget extends WP_Widget {
 		$widgetpostcontent = empty($instance['widgetpostcontent']) ? '' : $instance['widgetpostcontent'];
 		$hidebutton = empty($instance['hidebutton']) ? 'none' : $instance['hidebutton'];
 		$postto = empty($instance['postto']) ? '' : $instance['postto'];
+		$hide = '';
 		if ( $hidebutton == 'subscribe' || $hidebutton == 'unsubscribe' ) {
 			$hide = " hide=\"" . $hidebutton . "\"";
+		} elseif ( $hidebutton == 'link' ) {
+			$hide = " link=\"" . __('(Un)Subscribe to Posts', 'subscribe2') . "\"";
 		}
+		$postid = '';
 		if ( $postto ) {
 			$postid = " id=\"" . $postto . "\"";
 		}
@@ -41,7 +45,7 @@ class S2_Form_widget extends WP_Widget {
 		echo "</div>";
 		echo $after_widget;
 	}
-	
+
 	/**
 	Saves the widgets settings.
 	*/
@@ -53,10 +57,10 @@ class S2_Form_widget extends WP_Widget {
 		$instance['widgetpostcontent'] = stripslashes($new_instance['widgetpostcontent']);
 		$instance['hidebutton'] = strip_tags(stripslashes($new_instance['hidebutton']));
 		$instance['postto'] = stripslashes($new_instance['postto']);
-		
+
 		return $instance;
 	}
-	
+
 	/**
 	Creates the edit form for the widget.
 	*/
@@ -71,7 +75,7 @@ class S2_Form_widget extends WP_Widget {
 		}
 		// code to obtain old settings too
 		$instance = wp_parse_args( (array) $instance, $defaults);
-		
+
 		$title = htmlspecialchars($instance['title'], ENT_QUOTES);
 		$div= htmlspecialchars($instance['div'], ENT_QUOTES);
 		$widgetprecontent = htmlspecialchars($instance['widgetprecontent'], ENT_QUOTES);
@@ -79,7 +83,7 @@ class S2_Form_widget extends WP_Widget {
 		$hidebutton = htmlspecialchars($instance['hidebutton'], ENT_QUOTES);
 		$postto = htmlspecialchars($instance['postto'], ENT_QUOTES);
 
-		global $wpdb;
+		global $wpdb, $mysubscribe2;
 		$sql = "SELECT ID, post_title FROM $wpdb->posts WHERE post_type='page' AND post_status='publish'";
 		$pages = $wpdb->get_results($sql);
 
@@ -92,8 +96,12 @@ class S2_Form_widget extends WP_Widget {
 		echo "<textarea class=\"widefat\" id=\"" . $this->get_field_name('widgetprecontent') . "\" name=\"" . $this->get_field_name('widgetprecontent') . "\" rows=\"2\" cols=\"25\">" . $widgetprecontent . "</textarea></label></p>\r\n";
 		echo "<p><label for=\"" . $this->get_field_name('widgetpostcontent') . "\">" . __('Post-Content', 'subscribe2') . ":\r\n";
 		echo "<textarea class=\"widefat\" id=\"" . $this->get_field_id('widgetpostcontent') . "\" name=\"" . $this->get_field_name('widgetpostcontent') . "\" rows=\"2\" cols=\"25\">" . $widgetpostcontent . "</textarea></label></p>\r\n";
-		echo "<p><label for=\"" . $this->get_field_name('hidebutton') . "\">" . __('Hide button', 'subscribe2') . ":<br />\r\n";
-		echo "<input name=\"" . $this->get_field_name('hidebutton') . "\" type=\"radio\" value=\"none\"". checked('none', $hidebutton, false) . "/>" . __('None', 'subscribe2') . "<br /><input name=\"" . $this->get_field_name('hidebutton') . "\" type=\"radio\" value=\"subscribe\"". checked('subscribe', $hidebutton, false) . "/>" . __('Subscribe', 'subscribe2') . "<br /><input name=\"" . $this->get_field_name('hidebutton') . "\" type=\"radio\" value=\"unsubscribe\"". checked('unsubscribe', $hidebutton, false) . "/>" . __('Unsubscribe', 'subscribe2') . "</label></p>\r\n";
+		echo "<p><label for=\"" . $this->get_field_name('hidebutton') . "\">" . __('Display options', 'subscribe2') . ":<br />\r\n";
+		echo "<input name=\"" . $this->get_field_name('hidebutton') . "\" type=\"radio\" value=\"none\"". checked('none', $hidebutton, false) . "/>" . __('Show complete form', 'subscribe2') . "<br /><input name=\"" . $this->get_field_name('hidebutton') . "\" type=\"radio\" value=\"subscribe\"". checked('subscribe', $hidebutton, false) . "/>" . __('Hide Subscribe button', 'subscribe2') . "<br /><input name=\"" . $this->get_field_name('hidebutton') . "\" type=\"radio\" value=\"unsubscribe\"". checked('unsubscribe', $hidebutton, false) . "/>" . __('Hide Unsubscribe button', 'subscribe2');
+		if ( '1' == $mysubscribe2->subscribe2_options['ajax'] ) {
+			echo "<br /><input name=\"" . $this->get_field_name('hidebutton') . "\" type=\"radio\" value=\"link\"". checked('link', $hidebutton, false) . "/>" . __('Show as link', 'subscribe2');
+		}
+		echo "</label></p>\r\n";
 		if ( !empty($pages) ) {
 			echo "<p><label for=\"" . $this->get_field_name('postto') . "\">" . __('Post form content to page', 'subscribe2') . ":\r\n";
 			echo "<select id=\"" . $this->get_field_id('postto') . "\" name=\"" . $this->get_field_name('postto') . "\">\r\n";

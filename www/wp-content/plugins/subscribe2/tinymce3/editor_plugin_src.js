@@ -3,7 +3,7 @@
 		init : function(ed, url) {
 			var pb = '<img src="' + url + '/../../include/trans.gif" class="mceSubscribe2 mceItemNoResize" />',
 			cls = 'mceSubscribe2',
-			sep = ed.getParam('subscribe2_separator', '<!--subscribe2-->'),
+			sep = ed.getParam('subscribe2_separator', '[subscribe2]'),
 			pbRE;
 
 			pbRE = new RegExp(sep.replace(/[\?\.\*\[\]\(\)\{\}\+\^\$\:]/g, function(a) {
