@@ -71,35 +71,23 @@ add_shortcode('easy_in_up', 'inout_shortcode');
 function widget_inout_content($args) {
 
   $options = get_option('inout');
-  $type = $options['type']; 
+  extract($args);
 
-  switch($type) {
-    case 'dialog': 
-    break; 
-    
-    case 'list': 
-    break; 
-    
-    default:
-      extract($args);
-    
-      $title = $options['title'];  
-         
-      echo  $before_widget,
-            $before_title,
-            $title,
-            $after_title,
-            '<div class="inout_container">',
-            '<div class="inout_screen"></div>',
-            '<div class="inout_loading"></div>',
-            '<div class="inout_content">',
-            FORM_CONTENT(),
-            '</div>',
-            '<div class="inout_message"></div>',
-            '</div>',
-            $after_widget;
-    break;
-  }
+  $title = $options['title'];  
+     
+  echo  $before_widget,
+        $before_title,
+        $title,
+        $after_title,
+        '<div class="inout_container">',
+        '<div class="inout_screen"></div>',
+        '<div class="inout_loading"></div>',
+        '<div class="inout_content">',
+        FORM_CONTENT(),
+        '</div>',
+        '<div class="inout_message"></div>',
+        '</div>',
+        $after_widget;
 }
 
 function widget_inout_control() {

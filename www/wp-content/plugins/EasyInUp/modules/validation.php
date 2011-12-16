@@ -1,6 +1,9 @@
 <?php
 
   require_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';
+       
+/* Form validator class 
+------------------------------------------------------------------------------*/     
             
   class FormValidator {
     
@@ -101,8 +104,10 @@
 
   }
 
-  $validator = new FormValidator();
+/* Validator actions control 
+------------------------------------------------------------------------------*/   
 
+  $validator = new FormValidator();
 
   try {
   

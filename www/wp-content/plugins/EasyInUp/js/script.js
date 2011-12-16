@@ -35,6 +35,9 @@ $(document).ready(function(){
   INOUT.content = $('.widget_inout .inout_content');
   INOUT.message = $('.widget_inout .inout_message');
   
+  /*  Functions
+  ----------------------------------------------------------------------------*/
+  
   INOUT.empty_error = function() {
     INOUT.content.find('.inout_error').empty();
   }
