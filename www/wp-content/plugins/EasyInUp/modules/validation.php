@@ -31,6 +31,20 @@
       $status = new stdClass();
       switch($type) {
       
+        case 'min': 
+          $min = 3;
+          $status->type = mb_strlen(trim($val))>=$min;
+          $status->message = 'At least '.$min.' characters';
+          return $status; 
+        break;
+        
+        case 'max': 
+          $max = 64;
+          $status->type = mb_strlen(trim($val))<=$max;
+          $status->message = 'Maximum of '.$max.' characters';
+          return $status; 
+        break;
+      
         case 'email': 
           $status->type = filter_var($val, FILTER_VALIDATE_EMAIL);
           $status->message = 'Invalid email address';
@@ -122,6 +136,12 @@
           $password = $_POST['password'];
           $repeat = $_POST['repeat'];
           
+          $validator->addValidation('min', 'login', $login);
+          $validator->addValidation('max', 'login', $login);
+          
+          $validator->addValidation('min', 'password', $password);
+          $validator->addValidation('max', 'password', $password);
+          
           $validator->addValidation('email', 'email', $email);   
           $validator->addValidation('unique', 'login', array(
             'login' => $login,
@@ -146,7 +166,7 @@
           	
             $id = wp_insert_user($creds);
             
-            echo $validator->success('Successful authorization!');  
+            echo $validator->success('Successful registration!', inout_redirect('reg-redirect'));  
           }
         break;
         
@@ -173,7 +193,7 @@
           	
           	wp_set_current_user($user->ID);
           	
-            echo $validator->success('Successful authorization!', inout_redirect('reg-redirect'));  
+            echo $validator->success('Successful authorization!', inout_redirect('auth-redirect'));  
           } 
         break; 
         

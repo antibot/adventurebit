@@ -83,7 +83,7 @@ $(document).ready(function(){
         if(info) {
           if(info.success) {
             INOUT.message.html(info.message);  
-            if(type == 'auth') {
+            if(type == 'auth' || type == 'reg') {
               var redirect = info.redirect;
               if(redirect) {                       
                 location.href = redirect;
