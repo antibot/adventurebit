@@ -5,7 +5,7 @@
       
     $redirect = $options[$name];
     
-    if(empty($redirect) || filter_var($redirect, FILTER_VALIDATE_URL) == false) {
+    if(empty($redirect) || !is_string($redirect)) {
       $redirect = home_url();
     } 
     
