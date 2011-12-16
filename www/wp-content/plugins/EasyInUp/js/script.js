@@ -11,48 +11,60 @@ $(document).ready(function(){
   INOUT.auth = $('.widget_inout #inout_auth');
   INOUT.exit = $('.widget_inout #inout_exit');
   
-  INOUT.reg_send = INOUT.reg.find('.inout_send');
-  INOUT.auth_send = INOUT.auth.find('.inout_send');
-  INOUT.exit_send = INOUT.exit.find('.inout_send');
+  INOUT.screen = $('.widget_inout .inout-screen');
+  INOUT.loading = $('.widget_inout .inout-loading');
   
-  INOUT.reg_link = INOUT.auth.find('.inout_reg_link');
-  INOUT.forgot_link = INOUT.auth.find('.inout_forgot_link');
-  INOUT.auth_link = INOUT.reg.find('.inout_auth_link');
+  INOUT.content = $('.widget_inout .inout-content');
   
+  INOUT.progress = function(type){
+    if(type) {
+      INOUT.screen.show();
+      INOUT.loading.show();  
+    } else {
+      INOUT.screen.hide();
+      INOUT.loading.hide();  
+    }
+  }
+
   INOUT.reload = function(type) {
     type = type || 'auth';
+    
+    INOUT.progress(true);
+    
     $.post(PLUGIN_URL+'modules/form.php', {type: type}, function(data){
-      console.dir(data);
+      INOUT.content.html(data); 
+      INOUT.progress(false);
     });
   }
   
   /*  Actions
   ----------------------------------------------------------------------------*/
   
-  INOUT.exit_send.delegate('', 'click', function(){  
-    console.log('exit_send');  
+  INOUT.exit.delegate('.inout_send', 'click', function(){  
   });
   
-  INOUT.auth_send.delegate('', 'click', function(){
+  INOUT.auth.delegate('.inout_send', 'click', function(){
     console.log('auth_send');
+    return false;
   });
   
-  INOUT.reg_send.delegate('', 'click', function(){
+  INOUT.reg.delegate('.inout_send', 'click', function(){
     console.log('reg_send');
+    return false;
   });
   
   /*  Change Models
   ----------------------------------------------------------------------------*/
   
-  INOUT.reg_link.delegate('', 'click', function(){
+  INOUT.content.delegate('.inout_reg_link', 'click', function(){
     INOUT.reload('reg'); 
   });
   
-  INOUT.auth_link.delegate('', 'click', function(){
+  INOUT.content.delegate('.inout_auth_link', 'click', function(){
     INOUT.reload('auth'); 
   });
   
-  INOUT.forgot_link.delegate('', 'click', function(){
+  INOUT.content.delegate('.inout_forgot_link', 'click', function(){
     INOUT.reload('forgot');  
   });
   

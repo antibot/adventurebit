@@ -70,12 +70,18 @@ function widget_inout_content($args) {
     
       $title = $options['title'];  
          
-      echo $before_widget;
-      echo $before_title;
-      echo $title;
-      echo $after_title;
-      echo FORM_CONTENT();
-      echo $after_widget;
+      echo  $before_widget,
+            $before_title,
+            $title,
+            $after_title,
+            '<div class="inout-container">',
+            '<div class="inout-screen"></div>',
+            '<div class="inout-loading"></div>',
+            '<div class="inout-content">',
+            FORM_CONTENT(),
+            '</div>',
+            '</div>',
+            $after_widget;
     break;
   }
 }

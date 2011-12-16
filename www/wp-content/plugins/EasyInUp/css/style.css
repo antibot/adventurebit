@@ -9,7 +9,7 @@ Author URI: http://adventurebit.com/
 
 
 .widget_inout {
-
+  position: relative;
 }
 
 .widget_inout a {
@@ -19,6 +19,39 @@ Author URI: http://adventurebit.com/
 
 .widget_inout button {
   cursor: pointer;
+}
+
+.widget_inout .inout-screen {
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  filter:alpha(opacity=30);
+  -moz-opacity: 0.3;
+  -khtml-opacity: 0.3;
+  opacity: 0.3;
+  display: none;
+}
+
+.widget_inout .inout-loading {
+  z-index: 3;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: url(../images/loadinfo.gif) no-repeat center center;
+  display: none;
+}
+
+.widget_inout .inout-container {
+  position: relative;
+  z-index: 1;
+}
+
+.widget_inout .inout-content {
 }
 
 .widget_inout #inout_exit .inout_exit_link {

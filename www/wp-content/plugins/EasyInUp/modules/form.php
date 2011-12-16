@@ -1,11 +1,5 @@
 <?php 
-   
-  if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $type = $_POST['type'];
-    echo 12345;
-    return;
-  } 
-     
+      
   function redirect($name) {
     $options = get_option('inout');
       
@@ -21,7 +15,7 @@
   function AUTHORIZATION_CONTENT() {
     ?>
       <div><big>Authorization</big></div>
-      <form id="inout_auth" action="<?= wp_login_url( redirect('auth-redirect') ) ?>" method="post" >
+      <form id="inout_auth" action="" method="post" >
         <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -115,6 +109,33 @@
       return AUTHORIZATION_CONTENT();  
     }
   
+  }
+  
+  try {
+  
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+      switch($_POST['type']) {
+      
+        case 'reg':
+          REGISTRATION_CONTENT();
+        break;
+        
+        case 'auth':
+          echo AUTHORIZATION_CONTENT();
+        break; 
+        
+        case 'forgot':
+          echo FORGOT_CONTENT();
+        break; 
+        
+        default: 
+          
+      }
+      return;
+    } 
+  
+  } catch(Exception $e) {
+    echo 'error';
   }
 
 ?>
