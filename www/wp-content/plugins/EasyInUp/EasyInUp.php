@@ -74,12 +74,13 @@ function widget_inout_content($args) {
             $before_title,
             $title,
             $after_title,
-            '<div class="inout-container">',
-            '<div class="inout-screen"></div>',
-            '<div class="inout-loading"></div>',
-            '<div class="inout-content">',
+            '<div class="inout_container">',
+            '<div class="inout_screen"></div>',
+            '<div class="inout_loading"></div>',
+            '<div class="inout_content">',
             FORM_CONTENT(),
             '</div>',
+            '<div class="inout_message"></div>',
             '</div>',
             $after_widget;
     break;

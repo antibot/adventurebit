@@ -21,7 +21,7 @@ Author URI: http://adventurebit.com/
   cursor: pointer;
 }
 
-.widget_inout .inout-screen {
+.widget_inout .inout_screen {
   z-index: 2;
   position: absolute;
   left: 0;
@@ -35,7 +35,7 @@ Author URI: http://adventurebit.com/
   display: none;
 }
 
-.widget_inout .inout-loading {
+.widget_inout .inout_loading {
   z-index: 3;
   position: absolute;
   right: 0;
@@ -46,12 +46,17 @@ Author URI: http://adventurebit.com/
   display: none;
 }
 
-.widget_inout .inout-container {
+.widget_inout .inout_container {
   position: relative;
   z-index: 1;
 }
 
-.widget_inout .inout-content {
+.widget_inout .inout_content {
+
+}
+
+.widget_inout.inout_message {
+  font-style: italic;
 }
 
 .widget_inout #inout_exit .user span {

@@ -31,6 +31,7 @@
           Remember Me
           <div class="inout_error"></div>
         </label>
+        <input type="hidden" name="type" value="auth" />
         <div>
           <button class="inout_send">Send</button>
         </div>
@@ -49,6 +50,7 @@
           <input type="text" name="email" />
           <div class="inout_error"></div>
         </label>  
+        <input type="hidden" name="type" value="forgot" />
         <div>
           <button class="inout_send">Send</button>
         </div>
@@ -81,6 +83,7 @@
           <input type="password" name="repeat" />
           <div class="inout_error"></div>
         </label>
+        <input type="hidden" name="type" value="reg" />
         <div>
           <button class="inout_send">Send</button>
         </div>
