@@ -18,12 +18,12 @@
       <form id="inout_auth" method="post">
         <label class="inout_login">
           <div>Login:</div>
-          <input type="text" name="login" />
+          <input type="text" name="login" maxlength="64" />
           <div class="inout_error"></div>
         </label>
         <label class="inout_password">
           <div>Password:</div>
-          <input type="password" name="password" />
+          <input type="password" name="password" maxlength="64" />
           <div class="inout_error"></div>
         </label>
         <label class="inout_rememberme">
@@ -47,7 +47,7 @@
       <form id="inout_forgot" action="" method="post" >
         <label class="inout_email">
           <div>Email:</div>
-          <input type="text" name="email" />
+          <input type="text" name="email" maxlength="64" />
           <div class="inout_error"></div>
         </label>  
         <input type="hidden" name="type" value="forgot" />
@@ -65,22 +65,22 @@
       <form id="inout_reg" method="post">
         <label class="inout_login">
           <div>Login:</div>
-          <input type="text" name="login" />
+          <input type="text" name="login" maxlength="64" />
           <div class="inout_error"></div>
         </label>
         <label class="inout_email">
           <div>Email:</div>
-          <input type="text" name="email" />
+          <input type="text" name="email" maxlength="64" />
           <div class="inout_error"></div>
         </label>
         <label class="inout_password">
           <div>Password:</div>
-          <input type="password" name="password" />
+          <input type="password" name="password" maxlength="64" />
           <div class="inout_error"></div>
         </label>
         <label class="inout_repeat">
           <div>Repeat:</div>
-          <input type="password" name="repeat" />
+          <input type="password" name="repeat" maxlength="64" />
           <div class="inout_error"></div>
         </label>
         <input type="hidden" name="type" value="reg" />
@@ -105,6 +105,31 @@
         </div>
         <a class="inout_send" href="<?= wp_logout_url( inout_redirect('exit-redirect') ); ?>" >Exit</a>
       </div>
+    <?php
+  }
+  
+  function RESTORATION_CONTENT() {
+    global $current_user;
+    get_currentuserinfo()
+    ?>           
+      <div><big>Restoration</big></div>    
+      <form id="inout_restore" method="post">
+        <label class="inout_password">
+          <div>Password:</div>
+          <input type="password" name="password" maxlength="64" />
+          <div class="inout_error"></div>
+        </label>
+        <label class="inout_repeat">
+          <div>Repeat:</div>
+          <input type="password" name="repeat" maxlength="64" />
+          <div class="inout_error"></div>
+        </label>
+        <input type="hidden" name="type" value="restore" />
+        <div>
+          <button class="inout_send">Send</button>
+        </div>
+        <a class="inout_auth_link">Authorization</a>
+      </form>
     <?php
   }
   

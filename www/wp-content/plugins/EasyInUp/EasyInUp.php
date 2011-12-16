@@ -52,14 +52,19 @@ add_action('wp_footer', 'files');
  
 function inout()
 {
-
+  if($_GET['confirmation']) {
+    $confirmation = $_GET['confirmation'];
+  }
+  if($_GET['restoration']) {
+    $restoration = $_GET['restoration'];
+  }
 }
 
 function FORM_CONTENT() {
   if(is_user_logged_in()) {
     return EXIT_CONTENT();     
   } else {
-    return AUTHORIZATION_CONTENT();  
+    return RESTORATION_CONTENT();  
   }
 }
 

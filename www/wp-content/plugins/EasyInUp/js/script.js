@@ -28,6 +28,7 @@ $(document).ready(function(){
   INOUT.auth = $('.widget_inout #inout_auth');
   INOUT.exit = $('.widget_inout #inout_exit');
   INOUT.forgot = $('.widget_inout #inout_forgot');
+  INOUT.restore = $('.widget_inout #inout_restore');
   
   INOUT.screen = $('.widget_inout .inout_screen');
   INOUT.loading = $('.widget_inout .inout_loading');
@@ -151,6 +152,14 @@ $(document).ready(function(){
   });
   
   INOUT.reg.delegate('', 'submit', function(){
+    var form = $(this);
+    INOUT.post({
+      form: form
+    });
+    return false;
+  });
+  
+  INOUT.restore.delegate('', 'submit', function(){
     var form = $(this);
     INOUT.post({
       form: form

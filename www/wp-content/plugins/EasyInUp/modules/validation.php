@@ -130,6 +130,26 @@
     
       switch($_POST['type']) {
       
+        case 'restore':
+          $password = $_POST['password'];
+          $repeat = $_POST['repeat'];
+          
+          $validator->addValidation('min', 'password', $password);
+          $validator->addValidation('max', 'password', $password);
+          
+          $validator->addValidation('equality', 'repeat', array(
+            'password' => $password,
+            'repeat' => $repeat
+          ));
+          
+          if($validator->validateForm() !== true) {
+            echo $validator->messages();
+          } else {
+            
+          }
+          
+        break;
+        
         case 'reg':
           $login = $_POST['login'];
           $email = $_POST['email'];
@@ -165,6 +185,9 @@
             $creds['nickname'] = '';    
           	
             $id = wp_insert_user($creds);
+            
+            $headers = 'From: adventurebit <no-reply@adventurebit.com>' . "\r\n\\";          
+            wp_mail('respect_men@mail.ru', 'registration', 'message', $headers);
             
             echo $validator->success('Successful registration!', inout_redirect('reg-redirect'));  
           }
