@@ -139,7 +139,7 @@
       switch($_POST['what']) {
       
         case 'reg':
-          REGISTRATION_CONTENT();
+          echo REGISTRATION_CONTENT();
         break;
         
         case 'auth':

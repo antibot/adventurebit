@@ -64,7 +64,7 @@ function FORM_CONTENT() {
   if(is_user_logged_in()) {
     return EXIT_CONTENT();     
   } else {
-    return RESTORATION_CONTENT();  
+    return AUTHORIZATION_CONTENT();  
   }
 }
 
@@ -106,21 +106,30 @@ function widget_inout_control() {
 
   $options = get_option('inout', array(
     'title' => 'Easy Sign In/Up',
-    'type' => 'sidebar',
+    'email' => get_option('admin_email'),
     'auth-redirect' => '',
     'reg-redirect' => '',
-    'exit-redirect' => ''
+    'exit-redirect' => '',
+    'conf-reg-line' => '{BLOGNAME} - registration confirmation',
+    'rest-pwd-line' => '{BLOGNAME} - password restoration',
   ));
   
   if(isset($_POST['nonce'])) {
     $options['title'] = $_POST['title'];
+    $options['email'] = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ? $_POST['email'] : get_option('admin_email');
     
+    $options['confirm'] = $_POST['confirm'];
+    
+    $options['conf-reg-text'] = $_POST['conf-reg-text'];
+    $options['rest-pwd-text'] = $_POST['rest-pwd-text'];
+    
+    $options['conf-reg-line'] = $_POST['conf-reg-line'];
+    $options['rest-pwd-line'] = $_POST['rest-pwd-line'];
+
     $options['auth-redirect'] = $_POST['auth-redirect'];
     $options['reg-redirect'] = $_POST['reg-redirect'];
     $options['exit-redirect'] = $_POST['exit-redirect'];
-    
-    $options['type'] = $_POST['type']; 
-  }      
+  }  
 
   update_option('inout', $options);
 ?>
@@ -129,6 +138,18 @@ function widget_inout_control() {
   <label for="title">Title:</label>
 </div>
 <input class="widefat" type="text" id="title" name="title" maxlength="30" value="<?= $options['title'] ?>" />
+
+<p>
+  <div>
+    Email:
+  </div>   
+  <input class="widefat" type="text" name="email" maxlength="100" value="<?= $options['email'] ?>" /> 
+</p>
+
+<p>       
+  <input type="checkbox" name="confirm" <?= $options['confirm'] == 'on' ? 'checked' : '' ?> /> 
+  Confirm registration?  
+</p>
 
 <p>
   <div>
@@ -149,6 +170,33 @@ function widget_inout_control() {
     Exit redirect link:
   </div>   
   <input class="widefat" type="text" name="exit-redirect" maxlength="100" value="<?= $options['exit-redirect'] ?>" /> 
+</p>
+
+<p> 
+  <div>
+    Confirmation registration text message:
+  </div>   
+  Subject Line: <input type="text" style="width: 150px;" name="conf-reg-line" maxlength="256" value="<?= $options['conf-reg-line'] ?>" /> 
+  <textarea class="widefat" name="conf-reg-text" rows="5"><?= $options['conf-reg-text'] ?></textarea>
+</p>
+
+<p>
+  <div>
+    Restoration password text message:
+  </div>   
+  Subject Line: <input type="text" style="width: 150px;" name="rest-pwd-line" maxlength="256" value="<?= $options['rest-pwd-line'] ?>" />
+  <textarea class="widefat" name="rest-pwd-text" rows="5"><?= $options['rest-pwd-text'] ?></textarea>
+</p>
+
+<p>
+  <div>
+    <i>Special tags:</i>
+  </div>
+  {BLOGNAME}
+  {BLOGLINK}
+  {TIME}
+  {CODE}
+  {CODELINK}
 </p>
 
 <input type="hidden" name="nonce" value="<?= wp_create_nonce('inout'); ?>" /> 

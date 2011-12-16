@@ -186,8 +186,27 @@
           	
             $id = wp_insert_user($creds);
             
-            $headers = 'From: adventurebit <no-reply@adventurebit.com>' . "\r\n\\";          
-            wp_mail('respect_men@mail.ru', 'registration', 'message', $headers);
+            $code = md5(uniqid().$id);
+            
+            $confirmation = json_encode(array(
+              'code' => $code,
+              'time' => mktime()
+            )); 
+              
+            add_user_meta($id, 'confirmation', $confirmation);
+            
+            //mail -------------------------------------------------------------
+            // FIXME
+            $options = get_option('inout');
+            
+            if($options['confirm'] === 'on') {
+              $email = $options['email'];
+              
+              $headers = 'From: '.get_option('blogname').' '.$email . "\r\n\\";          
+              wp_mail('respect_men@mail.ru', 'registration', 'confirmation = '.$code, $headers);
+            }
+
+            //------------------------------------------------------------------
             
             echo $validator->success('Successful registration!', inout_redirect('reg-redirect'));  
           }
@@ -228,6 +247,24 @@
           if($validator->validateForm() !== true) {
             echo $validator->messages();
           } else {
+          
+            $code = md5(uniqid());
+            
+            $restoration = json_encode(array(
+              'code' => $code,
+              'time' => mktime()
+            )); 
+            
+            add_user_meta($id, 'restoration', $restoration);
+            
+            //mail -------------------------------------------------------------
+            // FIXME
+            
+            $headers = 'From: '.get_option('blogname').' '.$email . "\r\n\\";          
+            wp_mail('respect_men@mail.ru', 'registration', 'restoration = '.$code, $headers);
+            
+            //------------------------------------------------------------------
+          
             echo $validator->success('Please visit your email address!');  
           }
         break; 
