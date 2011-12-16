@@ -76,17 +76,18 @@ $(document).ready(function(){
     var type = fields.type;
     
     $.post(INOUT_PLUGIN_URL+'modules/validation.php', fields, function(data) {
-      
-      console.dir(data);
-      
+    
       if(data) {
         var info = $.evalJSON(data) || null;
         
         if(info) {
           if(info.success) {
             INOUT.message.html(info.message);  
-            if(type == 'auth' || type == 'reg') {
-              location.href = form.attr('action'); 
+            if(type == 'auth') {
+              var redirect = info.redirect;
+              if(redirect) {                       
+                location.href = redirect;
+              } 
             }
           } else {
             $.each(info, function(i, what){

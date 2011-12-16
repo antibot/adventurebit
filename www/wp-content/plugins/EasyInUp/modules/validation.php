@@ -1,6 +1,6 @@
 <?php
 
-  require_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';
+  require_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';   
        
 /* Form validator class 
 ------------------------------------------------------------------------------*/     
@@ -19,10 +19,11 @@
       return json_encode($this->messages);
     }
   
-    public function success($message) {
+    public function success($message, $redirect) {
       return json_encode(array(
         'success' => 'success',
-        'message' => $message
+        'message' => $message,
+        'redirect' => $redirect
       ));
     }
   
@@ -145,8 +146,6 @@
           	
             $id = wp_insert_user($creds);
             
-            print_r($id);
-          
             echo $validator->success('Successful authorization!');  
           }
         break;
@@ -174,7 +173,7 @@
           	
           	wp_set_current_user($user->ID);
           	
-            echo $validator->success('Successful authorization!');  
+            echo $validator->success('Successful authorization!', inout_redirect('reg-redirect'));  
           } 
         break; 
         

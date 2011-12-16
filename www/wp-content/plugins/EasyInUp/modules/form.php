@@ -1,8 +1,6 @@
 <?php 
-       
-  //include_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';      
-         
-  function redirect($name) {
+
+  function inout_redirect($name) {
     $options = get_option('inout');
       
     $redirect = $options[$name];
@@ -12,12 +10,12 @@
     } 
     
     return $redirect;  
-  }       
+  } 
                                                
   function AUTHORIZATION_CONTENT() {
     ?>
       <div><big>Authorization</big></div>
-      <form id="inout_auth" action="<?= redirect('auth-redirect') ?>" method="post">
+      <form id="inout_auth" method="post">
         <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -64,7 +62,7 @@
   function REGISTRATION_CONTENT() {
     ?>
       <div><big>Registration</big></div>
-      <form id="inout_reg" action="<?= redirect('reg-redirect') ?>" method="post">
+      <form id="inout_reg" method="post">
         <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -105,7 +103,7 @@
             <?= $current_user->user_login ?>
           </span> 
         </div>
-        <a class="inout_send" href="<?= wp_logout_url( redirect('exit-redirect') ); ?>" >Exit</a>
+        <a class="inout_send" href="<?= wp_logout_url( inout_redirect('exit-redirect') ); ?>" >Exit</a>
       </div>
     <?php
   }
