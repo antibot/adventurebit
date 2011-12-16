@@ -2,6 +2,9 @@ $(document).ready(function(){
 
   'use strict';
   
+  /*  Init
+  ----------------------------------------------------------------------------*/
+  
   var INOUT = INOUT || {}; 
 
   INOUT.reg = $('.widget_inout #inout_reg');
@@ -14,41 +17,43 @@ $(document).ready(function(){
   
   INOUT.reg_link = INOUT.auth.find('.inout_reg_link');
   INOUT.forgot_link = INOUT.auth.find('.inout_forgot_link');
-  INOUT.auth_link = INOUT.reg.find('.inout_reg_link');
+  INOUT.auth_link = INOUT.reg.find('.inout_auth_link');
   
-  INOUT.type = $.trim(INOUT_TYPE);
-  INOUT.redirect = $.trim(INOUT_REDIRECT);
-  
-  INOUT.goto = function(redirect) {
-    if(redirect) {
-      location.href = redirect; 
-    } else {
-      location.reload();
-    }
+  INOUT.reload = function(type) {
+    type = type || 'auth';
+    $.post(PLUGIN_URL+'modules/form.php', {type: type}, function(data){
+      console.dir(data);
+    });
   }
   
-  INOUT.exit_send.bind('click', function(){  
+  /*  Actions
+  ----------------------------------------------------------------------------*/
+  
+  INOUT.exit_send.delegate('', 'click', function(){  
     console.log('exit_send');  
   });
   
-  INOUT.auth_send.bind('click', function(){
+  INOUT.auth_send.delegate('', 'click', function(){
     console.log('auth_send');
   });
   
-  INOUT.reg_send.bind('click', function(){
+  INOUT.reg_send.delegate('', 'click', function(){
     console.log('reg_send');
   });
   
-  INOUT.reg_link.bind('click', function(){
-    console.log('reg_link');
+  /*  Change Models
+  ----------------------------------------------------------------------------*/
+  
+  INOUT.reg_link.delegate('', 'click', function(){
+    INOUT.reload('reg'); 
   });
   
-  INOUT.auth_link.bind('click', function(){
-    console.log('auth_link');
+  INOUT.auth_link.delegate('', 'click', function(){
+    INOUT.reload('auth'); 
   });
   
-  INOUT.forgot_link.bind('click', function(){
-    console.log('forgot_link');
+  INOUT.forgot_link.delegate('', 'click', function(){
+    INOUT.reload('forgot');  
   });
   
 

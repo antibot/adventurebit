@@ -26,14 +26,9 @@ function files() {
     wp_enqueue_script('inout_js');
   }
   
-  $options = get_option('inout');
-  $type = $options['type'];  
-  $redirect = $options['redirect'];
-  
   ?>
   <script>
-    var INOUT_TYPE = '<?= $type ?>';
-    var INOUT_REDIRECT = '<?= $redirect ?>';
+    var PLUGIN_URL = '<?= plugins_url("EasyInUp/") ?>';
   </script>
   <?php
 
@@ -90,16 +85,17 @@ function widget_inout_control() {
   $options = get_option('inout', array(
     'title' => 'Easy Sign In/Up',
     'type' => 'sidebar',
-    'redirect' => ''
+    'auth-redirect' => '',
+    'reg-redirect' => '',
+    'exit-redirect' => ''
   ));
   
   if(isset($_POST['nonce'])) {
     $options['title'] = $_POST['title'];
-    $options['redirect'] = $_POST['redirect'];
     
-    $options['registration'] = $_POST['registration'];
-    $options['authorization'] = $_POST['authorization'];
-    $options['exit'] = $_POST['exit'];
+    $options['auth-redirect'] = $_POST['auth-redirect'];
+    $options['reg-redirect'] = $_POST['reg-redirect'];
+    $options['exit-redirect'] = $_POST['exit-redirect'];
     
     $options['type'] = $_POST['type']; 
   }      
@@ -114,9 +110,23 @@ function widget_inout_control() {
 
 <p>
   <div>
-    <label for="redirect">Redirect to:</label>
+    Authorization redirect link:
   </div>   
-  <input class="widefat" type="text" id="redirect" name="redirect" maxlength="100" value="<?= $options['redirect'] ?>" /> 
+  <input class="widefat" type="text" name="auth-redirect" maxlength="100" value="<?= $options['auth-redirect'] ?>" /> 
+</p>
+
+<p>
+  <div>
+    Registration redirect link:
+  </div>   
+  <input class="widefat" type="text" name="reg-redirect" maxlength="100" value="<?= $options['reg-redirect'] ?>" /> 
+</p>
+
+<p>
+  <div>
+    Exit redirect link:
+  </div>   
+  <input class="widefat" type="text" name="exit-redirect" maxlength="100" value="<?= $options['exit-redirect'] ?>" /> 
 </p>
 
 <p>

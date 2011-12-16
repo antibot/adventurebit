@@ -1,8 +1,27 @@
-<?php
-
+<?php 
+   
+  if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $type = $_POST['type'];
+    echo 12345;
+    return;
+  } 
+     
+  function redirect($name) {
+    $options = get_option('inout');
+      
+    $redirect = $options[$name];
+    
+    if(empty($redirect) || filter_var($redirect, FILTER_VALIDATE_URL) == false) {
+      $redirect = home_url();
+    } 
+    
+    return $redirect;  
+  }       
+                                               
   function AUTHORIZATION_CONTENT() {
     ?>
-      <form id="inout_auth">
+      <div><big>Authorization</big></div>
+      <form id="inout_auth" action="<?= wp_login_url( redirect('auth-redirect') ) ?>" method="post" >
         <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -11,6 +30,11 @@
         <label class="inout_password">
           <div>Password:</div>
           <input type="password" name="password" />
+          <div class="inout_error"></div>
+        </label>
+        <label class="inout_rememberme">
+          <input type="checkbox" name="rememberme" value="forever" />
+          Remember Me
           <div class="inout_error"></div>
         </label>
         <div>
@@ -22,20 +46,43 @@
     <?php
   }
   
+  function FORGOT_CONTENT() {
+    ?>    
+      <div><big>Forgot</big></div>
+      <form id="inout_auth" action="" method="post" >
+        <label class="inout_email">
+          <div>Email:</div>
+          <input type="text" name="email" />
+          <div class="inout_error"></div>
+        </label>  
+        <div>
+          <button class="inout_send">Send</button>
+        </div>
+        <a class="inout_auth_link">Authorization</a>
+      </form>
+    <?php
+  }
+  
   function REGISTRATION_CONTENT() {
     ?>
+      <div><big>Registration</big></div>
       <form id="inout_reg">
-        <label class="login">
+        <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
           <div class="inout_error"></div>
         </label>
-        <label class="password">
+        <label class="inout_email">
+          <div>Email:</div>
+          <input type="text" name="email" />
+          <div class="inout_error"></div>
+        </label>
+        <label class="inout_password">
           <div>Password:</div>
           <input type="password" name="password" />
           <div class="inout_error"></div>
         </label>
-        <label class="repeat">
+        <label class="inout_repeat">
           <div>Repeat:</div>
           <input type="password" name="password" />
           <div class="inout_error"></div>
@@ -51,18 +98,17 @@
   function EXIT_CONTENT() {
     global $current_user;
     get_currentuserinfo()
-    ?>
+    ?>               
       <form id="inout_exit">
         <div>
           Hi, <?= $current_user->user_login ?> 
         </div>
-        <a class="inout_send">Exit</a>
+        <a class="inout_send" href="<?= wp_logout_url( redirect('exit-redirect') ); ?>" >Exit</a>
       </form>
     <?php
   }
 
   function FORM_CONTENT($type = null) { 
-  
     if(is_user_logged_in()) {
       return EXIT_CONTENT();     
     } else {
