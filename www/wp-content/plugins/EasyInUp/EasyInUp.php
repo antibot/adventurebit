@@ -32,6 +32,13 @@ function files() {
     wp_register_script('json_js', $scriptUrl); 
     wp_enqueue_script('json_js');
   }
+  
+  $scriptUrl = plugins_url('js/effects.js', __FILE__);
+  $scriptFile = WP_PLUGIN_DIR . '/EasyInUp/js/effects.js';
+  if(file_exists($scriptFile)) {
+    wp_register_script('effects_js', $scriptUrl); 
+    wp_enqueue_script('effects_js');
+  }
 
   ?>
   <script>
@@ -137,19 +144,6 @@ function widget_inout_control() {
     Exit redirect link:
   </div>   
   <input class="widefat" type="text" name="exit-redirect" maxlength="100" value="<?= $options['exit-redirect'] ?>" /> 
-</p>
-
-<p>
-  <div>
-    <label>
-      Type:  
-    </label>
-  </div>
-  <select name="type">
-    <option value="dialog"  <?= $options['type']=='dialog'?'selected':'' ?>>Dialog</option>
-    <option value="sidebar" <?= $options['type']=='sidebar'?'selected':'' ?>>Sidebar</option>
-    <option value="list" <?= $options['type']=='list'?'selected':'' ?>>List</option>
-  </select>
 </p>
 
 <input type="hidden" name="nonce" value="<?= wp_create_nonce('inout'); ?>" /> 

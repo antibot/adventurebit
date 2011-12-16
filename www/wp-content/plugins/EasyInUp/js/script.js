@@ -34,12 +34,16 @@ $(document).ready(function(){
   
   INOUT.content = $('.widget_inout .inout_content');
   INOUT.message = $('.widget_inout .inout_message');
-  
+   
   /*  Functions
   ----------------------------------------------------------------------------*/
-  
+        
   INOUT.empty_error = function() {
     INOUT.content.find('.inout_error').empty();
+  }
+  
+  INOUT.inputs = function() {
+    return INOUT.content.find('input[type="text"], input[type="password"]');
   }
   
   INOUT.progress = function(type){
@@ -65,7 +69,6 @@ $(document).ready(function(){
 
   INOUT.post = function(option) {
     INOUT.progress(true);
-    INOUT.empty_error();
      
     option = option || {};
     
@@ -77,6 +80,8 @@ $(document).ready(function(){
     
     $.post(INOUT_PLUGIN_URL+'modules/validation.php', fields, function(data) {
     
+      INOUT.empty_error();
+      
       if(data) {
         var info = $.evalJSON(data) || null;
         
@@ -90,9 +95,27 @@ $(document).ready(function(){
               } 
             }
           } else {
-            $.each(info, function(i, what){
+            $.each(info, function(i, what) {
               INOUT.content.find('.inout_'+what.name).find('.inout_error').html(what.message);    
             });  
+            
+            /*  You can animate and add any css to error input tags
+            ------------------------------------------------------------------*/
+            var inputs = INOUT.inputs();
+            
+            if(inputs.filter(':animated').size() == 0) {
+              inputs.stop().effect('bounce',
+              {
+                times: 5,
+                direction: 'right',
+                distance: 5
+              },200,function()
+              {
+                
+              });
+            } 
+            /*----------------------------------------------------------------*/
+            
           }
         }
       }
