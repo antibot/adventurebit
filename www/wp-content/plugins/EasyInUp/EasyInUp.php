@@ -44,9 +44,17 @@ function files() {
 add_action('wp_footer', 'files'); 
  
 function inout()
-{ 
+{
+
 }
- 
+
+function FORM_CONTENT() {
+  if(is_user_logged_in()) {
+    return EXIT_CONTENT();     
+  } else {
+    return AUTHORIZATION_CONTENT();  
+  }
+}
 
 /* Shortcode
 ------------------------------------------------------------------------------*/ 

@@ -34,9 +34,10 @@
         break;
         
         case 'auth': 
-          $login = $val['login'];
-          $password = $val['password'];
-          $status->type = $login == $password;
+          $login = sanitize_user(trim($val['login']));
+          $password = trim($val['password']);
+          
+          $status->type = wp_login($login, $password);
           $status->message = 'Invalid login or password';
           return $status; 
         break;
@@ -44,14 +45,18 @@
         case 'equality': 
           $repeat = $val['repeat'];
           $password = $val['password'];
+          
           $status->type = $repeat === $password;
           $status->message = 'Password fields are not equal!';
           return $status; 
         break;
         
         case 'unique': 
-          $status->type = false;
-          $status->message = 'User already exists';
+          $login = $val['login'];
+          $email = $val['email'];
+          
+          $status->type = get_user_by('login', $login) === false && get_user_by('email', $email) === false;
+          $status->message = 'User with this username or email already exists!';
           return $status; 
         break;
            
@@ -111,8 +116,7 @@
           $password = $_POST['password'];
           $repeat = $_POST['repeat'];
           
-          $validator->addValidation('email', 'email', $email);
-          
+          $validator->addValidation('email', 'email', $email);   
           $validator->addValidation('unique', 'login', array(
             'login' => $login,
             'email' => $email
@@ -123,10 +127,21 @@
             'repeat' => $repeat
           ));
           
-          
           if($validator->validateForm() !== true) {
             echo $validator->messages();
           } else {
+          
+            $creds = array();
+            $creds['user_login'] = $login;
+          	$creds['user_pass'] = $password;
+          	$creds['user_email'] = $email;
+            $creds['first_name'] = '';
+            $creds['nickname'] = '';    
+          	
+            $id = wp_insert_user($creds);
+            
+            print_r($id);
+          
             echo $validator->success('Successful authorization!');  
           }
         break;
@@ -142,10 +157,20 @@
           ));
           
           if($validator->validateForm() !== true) {
-            echo $validator->messages();
+            echo $validator->messages();   
           } else {
+          
+            $creds = array();
+          	$creds['user_login'] = $login;
+          	$creds['user_password'] = $password;
+          	$creds['remember'] = true;
+          	
+          	$user = wp_signon($creds, false);
+          	
+          	wp_set_current_user($user->ID);
+          	
             echo $validator->success('Successful authorization!');  
-          }
+          } 
         break; 
         
         case 'forgot':

@@ -1,6 +1,6 @@
 <?php 
-         
-  require_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';       
+       
+  //include_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';      
          
   function redirect($name) {
     $options = get_option('inout');
@@ -108,15 +108,6 @@
         <a class="inout_send" href="<?= wp_logout_url( redirect('exit-redirect') ); ?>" >Exit</a>
       </div>
     <?php
-  }
-
-  function FORM_CONTENT($type = null) { 
-    if(is_user_logged_in()) {
-      return EXIT_CONTENT();     
-    } else {
-      return AUTHORIZATION_CONTENT();  
-    }
-  
   }
   
   try {

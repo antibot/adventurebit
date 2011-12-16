@@ -74,6 +74,8 @@ $(document).ready(function(){
     
     $.post(INOUT_PLUGIN_URL+'modules/validation.php', fields, function(data) {
       
+      console.dir(data);
+      
       if(data) {
         var info = $.evalJSON(data) || null;
         
