@@ -10,6 +10,7 @@ $(document).ready(function(){
   INOUT.reg = $('.widget_inout #inout_reg');
   INOUT.auth = $('.widget_inout #inout_auth');
   INOUT.exit = $('.widget_inout #inout_exit');
+  INOUT.forgot = $('.widget_inout #inout_forgot');
   
   INOUT.screen = $('.widget_inout .inout-screen');
   INOUT.loading = $('.widget_inout .inout-loading');
@@ -40,16 +41,21 @@ $(document).ready(function(){
   /*  Actions
   ----------------------------------------------------------------------------*/
   
-  INOUT.exit.delegate('.inout_send', 'click', function(){  
-  });
-  
-  INOUT.auth.delegate('.inout_send', 'click', function(){
-    console.log('auth_send');
+  INOUT.forgot.delegate('', 'click', function(){  
+    var serialize = $(this).serialize();
+    console.dir(serialize);
     return false;
   });
   
-  INOUT.reg.delegate('.inout_send', 'click', function(){
-    console.log('reg_send');
+  INOUT.auth.delegate('', 'submit', function(){
+    var serialize = $(this).serialize();
+    console.dir(serialize);
+    return false;
+  });
+  
+  INOUT.reg.delegate('', 'submit', function(){
+    var serialize = $(this).serialize();
+    console.dir(serialize);
     return false;
   });
   

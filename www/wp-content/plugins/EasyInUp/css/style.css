@@ -54,6 +54,10 @@ Author URI: http://adventurebit.com/
 .widget_inout .inout-content {
 }
 
+.widget_inout #inout_exit .user span {
+  font-style: italic;
+}
+
 .widget_inout #inout_exit .inout_exit_link {
  
 }

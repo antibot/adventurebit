@@ -15,7 +15,7 @@
   function AUTHORIZATION_CONTENT() {
     ?>
       <div><big>Authorization</big></div>
-      <form id="inout_auth" action="" method="post" >
+      <form id="inout_auth" action="" method="post">
         <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -43,7 +43,7 @@
   function FORGOT_CONTENT() {
     ?>    
       <div><big>Forgot</big></div>
-      <form id="inout_auth" action="" method="post" >
+      <form id="inout_forgot" action="" method="post" >
         <label class="inout_email">
           <div>Email:</div>
           <input type="text" name="email" />
@@ -60,7 +60,7 @@
   function REGISTRATION_CONTENT() {
     ?>
       <div><big>Registration</big></div>
-      <form id="inout_reg">
+      <form id="inout_reg" action="" method="post">
         <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -78,7 +78,7 @@
         </label>
         <label class="inout_repeat">
           <div>Repeat:</div>
-          <input type="password" name="password" />
+          <input type="password" name="repeat" />
           <div class="inout_error"></div>
         </label>
         <div>
@@ -93,12 +93,15 @@
     global $current_user;
     get_currentuserinfo()
     ?>               
-      <form id="inout_exit">
-        <div>
-          Hi, <?= $current_user->user_login ?> 
+      <div id="inout_exit">
+        <div class="user">
+          Hi, 
+          <span>
+            <?= $current_user->user_login ?>
+          </span> 
         </div>
         <a class="inout_send" href="<?= wp_logout_url( redirect('exit-redirect') ); ?>" >Exit</a>
-      </form>
+      </div>
     <?php
   }
 
