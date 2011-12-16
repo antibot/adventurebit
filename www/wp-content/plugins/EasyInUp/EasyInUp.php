@@ -70,9 +70,6 @@ function widget_inout_content($args) {
     case 'list': 
     break; 
     
-    case 'shortcode': 
-    break;
-    
     default:
       extract($args);
     
@@ -92,64 +89,34 @@ function widget_inout_control() {
 
   $options = get_option('inout', array(
     'title' => 'Easy Sign In/Up',
-    'registration' => 'on',
-    'authorization' => 'on',
-    'exit' => 'on',
     'type' => 'sidebar',
     'redirect' => ''
   ));
   
-  if(isset($_POST['inout-nonce'])) {
-    $options['title'] = $_POST['inout-title'];
-    $options['redirect'] = $_POST['inout-redirect'];
+  if(isset($_POST['nonce'])) {
+    $options['title'] = $_POST['title'];
+    $options['redirect'] = $_POST['redirect'];
     
-    $options['registration'] = $_POST['inout-registration'];
-    $options['authorization'] = $_POST['inout-authorization'];
-    $options['exit'] = $_POST['inout-exit'];
+    $options['registration'] = $_POST['registration'];
+    $options['authorization'] = $_POST['authorization'];
+    $options['exit'] = $_POST['exit'];
     
-    $options['type'] = $_POST['inout-type']; 
+    $options['type'] = $_POST['type']; 
   }      
 
   update_option('inout', $options);
 ?>
 
 <div>
-  <label for="inout-title">Title:</label>
+  <label for="title">Title:</label>
 </div>
-<input class="widefat" type="text" id="inout-title" name="inout-title" maxlength="30" value="<?= $options['title'] ?>" />
+<input class="widefat" type="text" id="title" name="title" maxlength="30" value="<?= $options['title'] ?>" />
 
 <p>
   <div>
-    <label for="inout-redirect">Redirect to:</label>
+    <label for="redirect">Redirect to:</label>
   </div>   
-  <input class="widefat" type="text" id="inout-redirect" name="inout-redirect" maxlength="100" value="<?= $options['redirect'] ?>" /> 
-</p>
-
-<p>
-  <div>
-    <label>
-      <input type="checkbox" name="inout-registration" <?= $options['registration']=='on'?'checked':'' ?> />
-      Registration
-    </label>
-  </div>
-</p>
-
-<p>
-  <div>
-    <label>
-      <input type="checkbox" name="inout-authorization" checked />
-      Authorization
-    </label>
-  </div>
-</p>
-
-<p>
-  <div>
-    <label>
-      <input type="checkbox" name="inout-exit" checked />
-      Exit
-    </label>
-  </div>
+  <input class="widefat" type="text" id="redirect" name="redirect" maxlength="100" value="<?= $options['redirect'] ?>" /> 
 </p>
 
 <p>
@@ -158,14 +125,14 @@ function widget_inout_control() {
       Type:  
     </label>
   </div>
-  <select name="inout-type">
+  <select name="type">
     <option value="dialog"  <?= $options['type']=='dialog'?'selected':'' ?>>Dialog</option>
     <option value="sidebar" <?= $options['type']=='sidebar'?'selected':'' ?>>Sidebar</option>
     <option value="list" <?= $options['type']=='list'?'selected':'' ?>>List</option>
   </select>
 </p>
 
-<input type="hidden" name="inout-nonce" value="<?= wp_create_nonce('inout-nonce'); ?>" /> 
+<input type="hidden" name="nonce" value="<?= wp_create_nonce('inout'); ?>" /> 
   
 <?php
 }

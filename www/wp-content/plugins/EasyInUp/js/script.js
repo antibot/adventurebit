@@ -4,12 +4,17 @@ $(document).ready(function(){
   
   var INOUT = INOUT || {}; 
 
-  INOUT.reg_send = $('.widget_inout .inout_reg .inout_send');
-  INOUT.auth_send = $('.widget_inout .inout_auth .inout_send');
-  INOUT.exit = $('.widget_inout .inout_exit .inout_exit_link');
+  INOUT.reg = $('.widget_inout #inout_reg');
+  INOUT.auth = $('.widget_inout #inout_auth');
+  INOUT.exit = $('.widget_inout #inout_exit');
   
-  INOUT.reg = $('.widget_inout .inout_reg');
-  INOUT.auth = $('.widget_inout .inout_auth');
+  INOUT.reg_send = INOUT.reg.find('.inout_send');
+  INOUT.auth_send = INOUT.auth.find('.inout_send');
+  INOUT.exit_send = INOUT.exit.find('.inout_send');
+  
+  INOUT.reg_link = INOUT.auth.find('.inout_reg_link');
+  INOUT.forgot_link = INOUT.auth.find('.inout_forgot_link');
+  INOUT.auth_link = INOUT.reg.find('.inout_reg_link');
   
   INOUT.type = $.trim(INOUT_TYPE);
   INOUT.redirect = $.trim(INOUT_REDIRECT);
@@ -22,20 +27,28 @@ $(document).ready(function(){
     }
   }
   
-  INOUT.exit.bind('click', function(){  
-  
-    $.get('http://192.168.0.124/wp-login.php?action=logout&_wpnonce=11f32769eb', {}, function(data){
-      INOUT.goto(INOUT.redirect); 
-    });
-    
+  INOUT.exit_send.bind('click', function(){  
+    console.log('exit_send');  
   });
   
   INOUT.auth_send.bind('click', function(){
-    console.log('auth');
+    console.log('auth_send');
   });
   
   INOUT.reg_send.bind('click', function(){
-    console.log('reg');
+    console.log('reg_send');
+  });
+  
+  INOUT.reg_link.bind('click', function(){
+    console.log('reg_link');
+  });
+  
+  INOUT.auth_link.bind('click', function(){
+    console.log('auth_link');
+  });
+  
+  INOUT.forgot_link.bind('click', function(){
+    console.log('forgot_link');
   });
   
 

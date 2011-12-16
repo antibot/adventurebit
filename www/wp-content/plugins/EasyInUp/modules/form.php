@@ -2,7 +2,7 @@
 
   function AUTHORIZATION_CONTENT() {
     ?>
-      <div class="inout_auth">
+      <form id="inout_auth">
         <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -18,13 +18,13 @@
         </div>
         <a class="inout_reg_link">Registration</a>
         <a class="inout_forgot_link">Forgot password?</a>
-      </div>
+      </form>
     <?php
   }
   
   function REGISTRATION_CONTENT() {
     ?>
-      <div class="inout_reg">
+      <form id="inout_reg">
         <label class="login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -44,7 +44,7 @@
           <button class="inout_send">Send</button>
         </div>
         <a class="inout_auth_link">Authorization</a>
-      </div>
+      </form>
     <?php
   }
 
@@ -52,12 +52,12 @@
     global $current_user;
     get_currentuserinfo()
     ?>
-      <div class="inout_exit">
+      <form id="inout_exit">
         <div>
           Hi, <?= $current_user->user_login ?> 
         </div>
-        <a class="inout_exit_link">Exit</a>
-      </div>
+        <a class="inout_send">Exit</a>
+      </form>
     <?php
   }
 
