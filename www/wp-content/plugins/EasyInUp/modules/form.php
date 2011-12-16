@@ -1,5 +1,7 @@
 <?php 
-      
+         
+  require_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';       
+         
   function redirect($name) {
     $options = get_option('inout');
       
@@ -15,7 +17,7 @@
   function AUTHORIZATION_CONTENT() {
     ?>
       <div><big>Authorization</big></div>
-      <form id="inout_auth" action="" method="post">
+      <form id="inout_auth" action="<?= redirect('auth-redirect') ?>" method="post">
         <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -62,7 +64,7 @@
   function REGISTRATION_CONTENT() {
     ?>
       <div><big>Registration</big></div>
-      <form id="inout_reg" action="" method="post">
+      <form id="inout_reg" action="<?= redirect('reg-redirect') ?>" method="post">
         <label class="inout_login">
           <div>Login:</div>
           <input type="text" name="login" />
@@ -120,7 +122,7 @@
   try {
   
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-      switch($_POST['type']) {
+      switch($_POST['what']) {
       
         case 'reg':
           REGISTRATION_CONTENT();

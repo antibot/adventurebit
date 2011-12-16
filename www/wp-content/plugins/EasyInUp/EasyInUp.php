@@ -26,9 +26,16 @@ function files() {
     wp_enqueue_script('inout_js');
   }
   
+  $scriptUrl = plugins_url('js/json.js', __FILE__);
+  $scriptFile = WP_PLUGIN_DIR . '/EasyInUp/js/json.js';
+  if(file_exists($scriptFile)) {
+    wp_register_script('json_js', $scriptUrl); 
+    wp_enqueue_script('json_js');
+  }
+
   ?>
   <script>
-    var PLUGIN_URL = '<?= plugins_url("EasyInUp/") ?>';
+    var INOUT_PLUGIN_URL = '<?= plugins_url("EasyInUp/") ?>';
   </script>
   <?php
 

@@ -55,8 +55,14 @@ Author URI: http://adventurebit.com/
 
 }
 
-.widget_inout.inout_message {
+.widget_inout .inout_content .inout_error {
+  color: darkRed;
+  font-size: 11px;
+}
+
+.widget_inout .inout_message {
   font-style: italic;
+  color: darkGreen;
 }
 
 .widget_inout #inout_exit .user span {

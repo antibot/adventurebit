@@ -35,6 +35,10 @@ $(document).ready(function(){
   INOUT.content = $('.widget_inout .inout_content');
   INOUT.message = $('.widget_inout .inout_message');
   
+  INOUT.empty_error = function() {
+    INOUT.content.find('.inout_error').empty();
+  }
+  
   INOUT.progress = function(type){
     if(type) {
       INOUT.screen.show();
@@ -45,12 +49,12 @@ $(document).ready(function(){
     }
   }
 
-  INOUT.reload = function(type) {
+  INOUT.reload = function(what) {
     INOUT.progress(true);
     
-    type = type || 'auth';
+    what = what || 'auth';
 
-    $.post(PLUGIN_URL+'modules/form.php', {type: type}, function(data) {
+    $.post(INOUT_PLUGIN_URL+'modules/form.php', {what: what}, function(data) {
       INOUT.content.html(data); 
       INOUT.progress(false);
     });
@@ -58,22 +62,50 @@ $(document).ready(function(){
 
   INOUT.post = function(option) {
     INOUT.progress(true);
-    
+    INOUT.empty_error();
+     
     option = option || {};
+    
+    INOUT.message.empty();
     
     var form = option.form; 
     var fields = form.serializeObject();
+    var type = fields.type;
     
-    $.post(PLUGIN_URL+'modules/validation.php', fields, function(data) {
-      console.dir(data);
+    $.post(INOUT_PLUGIN_URL+'modules/validation.php', fields, function(data) {
+      
+      if(data) {
+        var info = $.evalJSON(data) || null;
+        
+        if(info) {
+          if(info.success) {
+            INOUT.message.html(info.message);  
+            if(type == 'auth' || type == 'reg') {
+              location.href = form.attr('action'); 
+            }
+          } else {
+            $.each(info, function(i, what){
+              INOUT.content.find('.inout_'+what.name).find('.inout_error').html(what.message);    
+            });  
+          }
+        }
+      }
+      
       INOUT.progress(false);
     });  
   }
   
+  /*  Error
+  ----------------------------------------------------------------------------*/
+  
+  INOUT.content.delegate('.inout_error', 'click', function() {
+    INOUT.empty_error();   
+  });
+  
   /*  Actions
   ----------------------------------------------------------------------------*/
   
-  INOUT.forgot.delegate('', 'click', function(){  
+  INOUT.forgot.delegate('', 'submit', function(){  
     var form = $(this);
     INOUT.post({
       form: form

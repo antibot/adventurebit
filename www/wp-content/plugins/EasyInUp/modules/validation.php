@@ -1,12 +1,108 @@
 <?php
 
-  function message($text='', $type='') {
-    echo json_encode(array($type => $text));  
+  require_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';
+            
+  class FormValidator {
+    
+    private $fields;
+    private $messages;
+  
+    function __construct() {
+      $this->messages = array();
+      $this->fields = array();
+    }
+  
+    public function messages() {
+      return json_encode($this->messages);
+    }
+  
+    public function success($message) {
+      return json_encode(array(
+        'success' => 'success',
+        'message' => $message
+      ));
+    }
+  
+    private function rules($type, $val) {
+      $status = new stdClass();
+      switch($type) {
+      
+        case 'email': 
+          $status->type = filter_var($val, FILTER_VALIDATE_EMAIL);
+          $status->message = 'Invalid email address';
+          return $status; 
+        break;
+        
+        case 'auth': 
+          $login = $val['login'];
+          $password = $val['password'];
+          $status->type = $login == $password;
+          $status->message = 'Invalid login or password';
+          return $status; 
+        break;
+        
+        case 'equality': 
+          $repeat = $val['repeat'];
+          $password = $val['password'];
+          $status->type = $repeat === $password;
+          $status->message = 'Password fields are not equal!';
+          return $status; 
+        break;
+        
+        case 'unique': 
+          $status->type = false;
+          $status->message = 'User already exists';
+          return $status; 
+        break;
+           
+        default:
+      }  
+    }
+  
+    public function addValidation($type, $name, $val, $message = null) {
+      
+      $field = new stdClass();
+      $field->type = $type; 
+      $field->name = $name; 
+      $field->val = $val; 
+      $field->message = $message;  
+      
+      array_push($this->fields, $field);
+    }
+    
+    public function validateForm() {
+      foreach($this->fields as $field) {
+        $status = $this->rules($field->type, $field->val);
+        
+        if($status->type != true) {
+        
+          if($field->message === null) {
+            $message = $status->message;   
+          } else {
+            $message = $field->message; 
+          }
+          
+          array_push($this->messages, array(
+            'type' => $field->type,
+            'name' => $field->name,
+            'message' => $message
+          )); 
+          
+        }
+      }  
+      
+      return count($this->messages) === 0;
+    }
+
   }
+
+  $validator = new FormValidator();
+
 
   try {
   
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
       switch($_POST['type']) {
       
         case 'reg':
@@ -14,20 +110,58 @@
           $email = $_POST['email'];
           $password = $_POST['password'];
           $repeat = $_POST['repeat'];
+          
+          $validator->addValidation('email', 'email', $email);
+          
+          $validator->addValidation('unique', 'login', array(
+            'login' => $login,
+            'email' => $email
+          ));
+
+          $validator->addValidation('equality', 'repeat', array(
+            'password' => $password,
+            'repeat' => $repeat
+          ));
+          
+          
+          if($validator->validateForm() !== true) {
+            echo $validator->messages();
+          } else {
+            echo $validator->success('Successful authorization!');  
+          }
         break;
         
         case 'auth':
           $login = $_POST['login'];
           $password = $_POST['password'];
           $rememberme = $_POST['rememberme'];
+          
+          $validator->addValidation('auth', 'login', array(
+            'login' => $login,
+            'password' => $password
+          ));
+          
+          if($validator->validateForm() !== true) {
+            echo $validator->messages();
+          } else {
+            echo $validator->success('Successful authorization!');  
+          }
         break; 
         
         case 'forgot':
           $email = $_POST['email'];
+          
+          $validator->addValidation('email', 'email', $email);
+          
+          if($validator->validateForm() !== true) {
+            echo $validator->messages();
+          } else {
+            echo $validator->success('Please visit your email address!');  
+          }
         break; 
         
         default: 
-          message('Invalid request', 'error');  
+          
       }
       return;
     } 
