@@ -149,8 +149,6 @@
           $password = $_POST['password'];
           $repeat = $_POST['repeat'];
           
-          $email = $_POST['email'];
-          
           $code = $_POST['code'];
           
           $validator->addValidation('min', 'password', $password);
@@ -161,21 +159,22 @@
             'repeat' => $repeat
           ));
           
+          $option = get_option($code);  
+          $data = json_decode($option);
+          
+          $email = $data->email;
+          
           $validator->addValidation('exists', 'password', $email);
           
           if($validator->validateForm() !== true) {
             echo $validator->messages();
           } else {
     
-            if(is_md5($code)) {
-            
-              $option = get_option($code);             
+            if(is_md5($code)) {        
                     
               if(!empty($option)) { 
               
                 delete_option($code);
-                
-                echo $validator->id; 
                 
                 wp_set_password($password, $validator->id); 
                 
