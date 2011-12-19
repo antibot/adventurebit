@@ -21,6 +21,10 @@ Author URI: http://adventurebit.com/
 ------------------------------------------------------------------------------*/
     
 include_once 'modules/form.php';    
+  
+function is_md5($str) {
+  return preg_match('#^[\w\d]{32}$#',$str);
+}  
     
 function files() {
 
@@ -79,23 +83,43 @@ function FORM_CONTENT() {
   if(isset($_GET['confirmation'])) {     
     $confirmation = $_GET['confirmation'];
     
-    $data->message = 'Registration completed!';
+    if(is_md5($confirmation)) {
     
-    ob_start();
-      AUTHORIZATION_CONTENT(); 
-    $data->form = ob_get_clean(); 
+      $option = get_option($confirmation);
       
-    return $data;
+      if(!empty($option)) {
+      
+        delete_option($option);
+      
+        $data->message = 'Registration completed!';
+        
+        ob_start();
+          AUTHORIZATION_CONTENT(); 
+        $data->form = ob_get_clean(); 
+          
+        return $data;
+      }
+    }
   } 
       
   if(isset($_GET['restoration'])) {
     $restoration = $_GET['restoration'];
     
-    ob_start();
-      RESTORATION_CONTENT(); 
-    $data->form = ob_get_clean(); 
+    if(is_md5($restoration)) {
+    
+      $option = get_option($restoration);
       
-    return $data;
+      if(!empty($option)) {
+      
+        delete_option($option);
+    
+        ob_start();
+          RESTORATION_CONTENT(); 
+        $data->form = ob_get_clean(); 
+          
+        return $data;
+      }
+    }
   }
 
   if(is_user_logged_in()) {

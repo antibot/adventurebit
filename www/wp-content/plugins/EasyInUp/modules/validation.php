@@ -1,6 +1,7 @@
 <?php
 
-  require_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';   
+  require_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';  
+  require_once ABSPATH . WPINC . '/ms-functions.php'; 
        
 /* Form validator class 
 ------------------------------------------------------------------------------*/     
@@ -19,7 +20,7 @@
       return json_encode($this->messages);
     }
   
-    public function success($message, $redirect) {
+    public function success($message, $redirect = '') {
       return json_encode(array(
         'success' => 'success',
         'message' => $message,
@@ -75,6 +76,12 @@
           
           $status->type = get_user_by('login', $login) === false && get_user_by('email', $email) === false;
           $status->message = 'User with this username or email already exists!';
+          return $status; 
+        break;
+        
+        case 'exists':
+          $status->type = get_user_id_from_string($val) !== null;
+          $status->message = 'User does not exist';
           return $status; 
         break;
            
@@ -186,24 +193,29 @@
           	
             $id = wp_insert_user($creds);
             
+            //mail -------------------------------------------------------------
+            // FIXME
+            
             $code = md5(uniqid().$id);
             
             $confirmation = json_encode(array(
               'code' => $code,
-              'time' => mktime()
+              'time' => mktime(),
+              'email' => $email
             )); 
               
-            add_user_meta($id, 'confirmation', $confirmation);
+            add_option($code, $confirmation);  
             
-            //mail -------------------------------------------------------------
-            // FIXME
             $options = get_option('inout');
             
             if($options['confirm'] === 'on') {
-              $email = $options['email'];
+              $admin_email = $options['email'];
+              $admin_subject = $options['conf-reg-line'];
+              $admin_message = $options['conf-reg-text'];
               
-              $headers = 'From: '.get_option('blogname').' '.$email . "\r\n\\";          
-              wp_mail('respect_men@mail.ru', 'registration', 'confirmation = '.$code, $headers);
+              $headers = 'From: '.get_option('blogname').' '.$options['email']."\r\n\\";   
+                     
+              wp_mail($email, $admin_subject, $admin_message, $headers);
             }
 
             //------------------------------------------------------------------
@@ -243,25 +255,38 @@
           $email = $_POST['email'];
           
           $validator->addValidation('email', 'email', $email);
+          $validator->addValidation('exists', 'email', $email);
           
           if($validator->validateForm() !== true) {
             echo $validator->messages();
           } else {
-          
-            $code = md5(uniqid());
-            
-            $restoration = json_encode(array(
-              'code' => $code,
-              'time' => mktime()
-            )); 
-            
-            add_user_meta($id, 'restoration', $restoration);
             
             //mail -------------------------------------------------------------
             // FIXME
+          
+            $id = get_user_id_from_string($email);
+          
+            $code = md5(uniqid().$id);
             
-            $headers = 'From: '.get_option('blogname').' '.$email . "\r\n\\";          
-            wp_mail('respect_men@mail.ru', 'registration', 'restoration = '.$code, $headers);
+            $confirmation = json_encode(array(
+              'code' => $code,
+              'time' => mktime(),
+              'email' => $email
+            )); 
+              
+            add_option($code, $confirmation);  
+            
+            $options = get_option('inout');
+            
+            if($options['confirm'] === 'on') {
+              $admin_email = $options['email'];
+              $admin_subject = $options['conf-reg-line'];
+              $admin_message = $options['conf-reg-text'];
+              
+              $headers = 'From: '.get_option('blogname').' '.$options['email']."\r\n\\";   
+                     
+              wp_mail($email, $admin_subject, $admin_message, $headers);
+            }
             
             //------------------------------------------------------------------
           
