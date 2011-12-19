@@ -161,7 +161,7 @@
             'repeat' => $repeat
           ));
           
-          $validator->addValidation('exists', 'email', $email);
+          $validator->addValidation('exists', 'password', $email);
           
           if($validator->validateForm() !== true) {
             echo $validator->messages();
@@ -285,7 +285,7 @@
             $creds = array();
           	$creds['user_login'] = $login;
           	$creds['user_password'] = $password;
-          	$creds['remember'] = true;
+          	$creds['remember'] = $rememberme === 'on' ? true : false;
           	
           	$user = wp_signon($creds, false);
           	
