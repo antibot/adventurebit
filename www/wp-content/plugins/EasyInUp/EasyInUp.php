@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Easy Registration/Authorization
+Plugin Name: Easy In/Up
 Plugin URI: http://adventurebit.com/
-Description: Easy Registration/Authorization in wordpress
+Description: Easy Registration/Authorization widget for wordpress. You can easily log in, register and password recovery with AJAX.
 Author: Selikhov Dmitry
 Version: 1.0
 Author URI: http://adventurebit.com/

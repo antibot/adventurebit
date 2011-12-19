@@ -88,8 +88,6 @@ $(document).ready(function(){
     
     $.post(INOUT_PLUGIN_URL+'modules/validation.php', fields, function(data) {
     
-      console.dir(data);
-    
       INOUT.empty_error();
       
       if(data) {
@@ -101,7 +99,7 @@ $(document).ready(function(){
             if(type == 'auth' || type == 'reg') {
               var redirect = info.redirect;
               if(redirect) {                       
-                location.href = redirect;
+                location.href = redirect;    
               } 
             } else if(type == 'restore') {
               location.reload();
