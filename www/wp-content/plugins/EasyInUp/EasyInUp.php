@@ -81,15 +81,15 @@ function FORM_CONTENT() {
   $data->message = '';    
        
   if(isset($_GET['confirmation'])) {     
-    $confirmation = $_GET['confirmation'];
+    $code = $_GET['confirmation'];
     
-    if(is_md5($confirmation)) {
+    if(is_md5($code)) {
     
-      $option = get_option($confirmation);
+      $option = get_option($code);
       
       if(!empty($option)) {
       
-        delete_option($option);
+        delete_option($code);
       
         $data->message = 'Registration completed!';
         
@@ -103,15 +103,27 @@ function FORM_CONTENT() {
   } 
       
   if(isset($_GET['restoration'])) {
-    $restoration = $_GET['restoration'];
+    $code = $_GET['restoration'];
     
-    if(is_md5($restoration)) {
+    if(is_md5($code)) {
     
-      $option = get_option($restoration);
+      $option = get_option($code);
       
       if(!empty($option)) {
-      
-        delete_option($option);
+    
+        $data = json_decode($option);
+        $time = $data->time;  
+    
+        if(floor((time()-$time)/60)/60 > 48) {
+          delete_option($code);
+          $data->message = 'Your link is outdated!';
+          
+          ob_start();
+            AUTHORIZATION_CONTENT(); 
+          $data->form = ob_get_clean(); 
+          
+          return $data;
+        }
     
         ob_start();
           RESTORATION_CONTENT(); 

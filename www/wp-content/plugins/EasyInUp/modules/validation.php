@@ -2,7 +2,7 @@
 
   require_once $_SERVER['DOCUMENT_ROOT'].'/wp-blog-header.php';  
   require_once ABSPATH . WPINC . '/ms-functions.php'; 
-       
+  
 /* Form validator class 
 ------------------------------------------------------------------------------*/     
             
@@ -10,6 +10,8 @@
     
     private $fields;
     private $messages;
+    
+    public $id;
   
     function __construct() {
       $this->messages = array();
@@ -80,7 +82,13 @@
         break;
         
         case 'exists':
-          $status->type = get_user_id_from_string($val) !== null;
+          $user = get_user_by('email', $val);
+          
+          if($user !== false) {
+            $this->id = $user->ID; 
+          }
+          
+          $status->type = $user !== false;
           $status->message = 'User does not exist';
           return $status; 
         break;
@@ -137,9 +145,13 @@
     
       switch($_POST['type']) {
       
-        case 'restore':
+        case 'restore':             
           $password = $_POST['password'];
           $repeat = $_POST['repeat'];
+          
+          $email = $_POST['email'];
+          
+          $code = $_POST['code'];
           
           $validator->addValidation('min', 'password', $password);
           $validator->addValidation('max', 'password', $password);
@@ -149,10 +161,27 @@
             'repeat' => $repeat
           ));
           
+          $validator->addValidation('exists', 'email', $email);
+          
           if($validator->validateForm() !== true) {
             echo $validator->messages();
           } else {
+    
+            if(is_md5($code)) {
             
+              $option = get_option($code);             
+                    
+              if(!empty($option)) { 
+              
+                delete_option($code);
+                
+                echo $validator->id; 
+                
+                wp_set_password($password, $validator->id); 
+                
+                echo $validator->success('Password successfully changed!'); 
+              }
+            }
           }
           
         break;
@@ -198,22 +227,37 @@
             
             $code = md5(uniqid().$id);
             
-            $confirmation = json_encode(array(
+            $data = json_encode(array(
               'code' => $code,
-              'time' => mktime(),
+              'time' => time(),
               'email' => $email
             )); 
               
-            add_option($code, $confirmation);  
+            add_option($code, $data);  
             
             $options = get_option('inout');
             
             if($options['confirm'] === 'on') {
+            
               $admin_email = $options['email'];
-              $admin_subject = $options['conf-reg-line'];
-              $admin_message = $options['conf-reg-text'];
+              $blog_name = get_bloginfo('name'); 
+              $blog_url = get_bloginfo('url');
               
-              $headers = 'From: '.get_option('blogname').' '.$options['email']."\r\n\\";   
+              $code_link = $blog_url.'?confirmation='.$code;
+              
+              $tags = array(
+                '{BLOGNAME}' => $blog_name,
+                '{BLOGLINK}' => '<a href="'.$blog_url.'" title="'.$blog_name.'">'.$blog_name.'</a>',
+                '{TIME}' => current_time('mysql'),
+                '{CODE}' => $code,
+                '{CODELINK}' => '<a href="'.$code_link.'" title="'.$code_link.'">'.$code_link.'</a>',
+                '{EMAIL}' => $admin_email
+              );  
+              
+              $admin_subject = strtr($options['conf-reg-line'], $tags);     
+              $admin_message = strtr($options['conf-reg-text'], $tags); 
+              
+              $headers = 'From: '.$blog_name.' '.$admin_email."\r\n\\";  
                      
               wp_mail($email, $admin_subject, $admin_message, $headers);
             }
@@ -264,26 +308,39 @@
             //mail -------------------------------------------------------------
             // FIXME
           
-            $id = get_user_id_from_string($email);
-          
-            $code = md5(uniqid().$id);
+            $code = md5(uniqid().$validator->id);
             
-            $confirmation = json_encode(array(
+            $data = json_encode(array(
               'code' => $code,
               'time' => mktime(),
               'email' => $email
             )); 
               
-            add_option($code, $confirmation);  
+            add_option($code, $data);  
             
             $options = get_option('inout');
             
             if($options['confirm'] === 'on') {
+      
               $admin_email = $options['email'];
-              $admin_subject = $options['conf-reg-line'];
-              $admin_message = $options['conf-reg-text'];
+              $blog_name = get_bloginfo('name'); 
+              $blog_url = get_bloginfo('url');
               
-              $headers = 'From: '.get_option('blogname').' '.$options['email']."\r\n\\";   
+              $code_link = $blog_url.'?restoration='.$code;
+              
+              $tags = array(
+                '{BLOGNAME}' => $blog_name,
+                '{BLOGLINK}' => '<a href="'.$blog_url.'" title="'.$blog_name.'">'.$blog_name.'</a>',
+                '{TIME}' => current_time('mysql'),
+                '{CODE}' => $code,
+                '{CODELINK}' => '<a href="'.$code_link.'" title="'.$code_link.'">'.$code_link.'</a>',
+                '{EMAIL}' => $admin_email
+              ); 
+              
+              $admin_subject = strtr($options['rest-pwd-line'], $tags);     
+              $admin_message = strtr($options['rest-pwd-text'], $tags); 
+              
+              $headers = 'From: '.$blog_name.' '.$admin_email."\r\n\\";   
                      
               wp_mail($email, $admin_subject, $admin_message, $headers);
             }

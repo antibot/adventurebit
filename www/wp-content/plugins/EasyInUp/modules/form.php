@@ -125,6 +125,7 @@
           <div class="inout_error"></div>
         </label>
         <input type="hidden" name="type" value="restore" />
+        <input type="hidden" name="code" value="<?= $_GET['restoration'] ?>" />
         <div>
           <button class="inout_send">Send</button>
         </div>

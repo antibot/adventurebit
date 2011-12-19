@@ -103,6 +103,8 @@ $(document).ready(function(){
               if(redirect) {                       
                 location.href = redirect;
               } 
+            } else if(type == 'restore') {
+              location.reload();
             }
           } else {
             $.each(info, function(i, what) {
