@@ -160,6 +160,7 @@
           ));
           
           $option = get_option($code);  
+          
           $data = json_decode($option);
           
           $email = $data->email;
