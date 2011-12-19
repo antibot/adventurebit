@@ -1,6 +1,6 @@
 /**
  * Google Map Shortcode 
- * Version: 3.0
+ * Version: 3.1
  * Author: Alain Gonzalez
  * Plugin URI: http://web-argument.com/google-map-shortcode-wordpress-plugin/
 */
@@ -63,10 +63,14 @@
 
 	function gmshc_switchImg(obj) {		
 		var iconSrc = obj.children("img").attr("src");
+		var attchID = obj.children("img").attr("attch");
 		obj.siblings().removeClass('gmshc_selected');			
-		obj.addClass('gmshc_selected');		
-		obj.siblings("input").val(iconSrc);
-		//$("#default_icon").val(iconSrc);
+		obj.addClass('gmshc_selected');	
+		var attr = iconSrc;
+		if (typeof attchID != "undefined"){
+			attr = attchID;
+		}
+			obj.siblings("input").val(attr);
 	}
 	
      function gmshc_add_map(){
@@ -105,7 +109,9 @@
 		var defaultFocusPoint = $("#default_focus").val();
 
 		var focusType = $("#focus_type").val();
-		var defaultFocusType= $("#default_focus_type").val();			
+		var defaultFocusType= $("#default_focus_type").val();
+		
+		var module = $("#module").val();			
         
         str = "[google-map-sc";
 		urlP = "";
@@ -130,7 +136,10 @@
 			urlP += "focus="+focusPoint+"&";
 		if(focusType != defaultFocusType)
 			str += " focus_type=\""+focusType+"\"";
-			urlP += "focus_type="+focusType;								
+			urlP += "focus_type="+focusType;
+		if(module != "")
+			str += " module=\""+module+"\"";
+			urlP += "focus="+module+"&";											
 		str +="]";
 		
 		return [str,urlP]; 		

@@ -2,8 +2,8 @@
 /*
 Plugin Name: Google Map Shortcode
 Plugin URI: http://web-argument.com/google-map-shortcode-wordpress-plugin/
-Description: Include Google Maps in your blogs with just one click.  
-Version: 3.0.1
+Description: Include Google Maps in your blogs easily and allow multiple interactions.  
+Version: 3.1
 Author: Alain Gonzalez
 Author URI: http://web-argument.com/
 */
@@ -26,17 +26,19 @@ Author URI: http://web-argument.com/
 
 define('GMSC_PLUGIN_DIR', WP_PLUGIN_DIR."/".dirname(plugin_basename(__FILE__)));
 define('GMSC_PLUGIN_URL', WP_PLUGIN_URL."/".dirname(plugin_basename(__FILE__)));
-define('GMSHC_VERSION_CURRENT','3.0.1');
+define('GMSHC_VERSION_CURRENT','3.1');
 define('GMSHC_VERSION_CHECK','2.2');
 
 require(GMSC_PLUGIN_DIR."/include/functions.php");
 require(GMSC_PLUGIN_DIR."/include/class.gmshc_point.php");
 require(GMSC_PLUGIN_DIR."/include/class.gmshc_post_points.php");
 
-add_action( 'admin_init', 'gmshc_init' );
+gmshc_load_modules();
 
-function gmshc_init(){
-	load_plugin_textdomain( 'google-map-sc', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+add_action( 'admin_init', 'gmshc_admin_init' );
+
+function gmshc_admin_init(){
+	load_plugin_textdomain( 'google-map-sc', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );	
 }
 
 /**
@@ -60,9 +62,11 @@ function get_gmshc_options ($default = false){
 							'type' => 'ROADMAP',
 							'animate' => true,
  							'focus_type' => 'open',
-							'version' => GMSHC_VERSION_CURRENT,
-							'center' => '0, 0',
+ 							'center' => '0, 0',
+							'modules' => array(),
+							'version' => GMSHC_VERSION_CURRENT
 							);
+							
     	
 	if ($default) {
 	update_option('gmshc_op', $gmshc_default);
@@ -70,18 +74,16 @@ function get_gmshc_options ($default = false){
 	}
 	
 	$options = get_option('gmshc_op');
-	
 	if (isset($options)){
-	    if (isset($options['version'])) {
+	    if (isset($options['version'])) {			
 			$chk_version = version_compare(GMSHC_VERSION_CHECK,$options['version']);
-			if ($chk_version == 0) 	return $options;
-			else if ($chk_version > 0) $options = $gmshc_default;
+			if ($chk_version <= 0 ) return $options;
+			else $options = $gmshc_default;
         } else {
 		$options = $gmshc_default;
 		}
 	}	
 	update_option('gmshc_op', $options);
-	
 	return $options;
 }
 
@@ -89,25 +91,24 @@ function get_gmshc_options ($default = false){
 /**
  * Inserting files on the header
  */
-function gmshc_head() {
+function gmshc_enqueue_scripts() {
+	
+	wp_enqueue_script( 'gmshc', GMSC_PLUGIN_URL.'/js/gmshc.2.3.js');
 
 	$options = get_gmshc_options();
-	
 	$language = $options['language'];
 	
-	$gmshc_header =  "\n<!-- Google Map Shortcode Version ".GMSHC_VERSION_CHECK."-->\n";		
-	$gmshc_header .= "<script src=\"http://maps.google.com/maps/api/js?sensor=false";
+	$google_map_api = "http://maps.google.com/maps/api/js?sensor=false";
 	if(isset($language)) 
-	$gmshc_header .= "&language=".$language;
-	$gmshc_header .="\" type=\"text/javascript\"></script>\n";	
-	$gmshc_header .= "<script type=\"text/javascript\" src=\"".GMSC_PLUGIN_URL."/js/gmshc.2.2.1.js\"></script>\n";	
-	$gmshc_header .=  "\n<!-- /Google Map Shortcode Version ".$options['version']."-->\n";		
+	$google_map_api .= "&language=".$language;	
 		
-	print($gmshc_header);
-
+	wp_enqueue_script( 'gmshc_google_api',$google_map_api);
 }
 
-add_action('wp_head', 'gmshc_head');
+
+add_action('wp_enqueue_scripts', 'gmshc_enqueue_scripts');
+
+
 
 /**
  * Default Open Window Html
@@ -155,8 +156,6 @@ function gmshc_sc($atts) {
 	
 	global $post;
 	$options = get_gmshc_options();	
-
-	$center = $options['center'];
 	
 	$width = $options['width'];
 	$height = $options['height'];
@@ -172,30 +171,36 @@ function gmshc_sc($atts) {
 	$animate = $options['animate'];	
 	$focus_type = $options['focus_type'];		
 
-	$the_items = array();	
+	$the_items = array();
 	
-	$final_atts = shortcode_atts(array(
-										'address' => '',
-										'title' =>'',
-										'description' => '',
-										'icon' => $icon,
-										'thumbnail' => '',	
-										'id' => '',
-										'cat' => '',
-										'zoom' => $zoom,
-										'width' => $width,
-										'height' => $height,
-										'margin' => $margin,
-										'align' => $align,		
-										'language' => $language,
-										'type' => $type,
-										'interval' => $interval,
-										'focus' => $focus,
-										'animate' => $animate,
-										'focus_type' => $focus_type, 
-										'canvas' => '',
-                    'center' => $center	
-										), $atts);	
+	$gmshc_default_sc =array(
+						'address' => '',
+						'title' =>'',
+						'description' => '',
+						'icon' => $icon,
+						'thumbnail' => '',	
+						'id' => '',
+						'cat' => '',
+						'zoom' => $zoom,
+						'width' => $width,
+						'height' => $height,
+						'margin' => $margin,
+						'align' => $align,		
+						'language' => $language,
+						'type' => $type,
+						'interval' => $interval,
+						'focus' => $focus,
+						'animate' => $animate,
+						'focus_type' => $focus_type,
+						'module' => '', 
+						'canvas' => '',
+            'center' => '0, 0'	
+						);	
+						
+	$gmshc_shortcode = apply_filters('gmshc_default_shortcode',$gmshc_default_sc);						
+	
+	$final_atts = apply_filters('gmshc_shortcode_atts',shortcode_atts($gmshc_shortcode, $atts));	
+		
 	extract($final_atts);		
 
 	$map_points = array();
@@ -235,7 +240,6 @@ function gmshc_sc($atts) {
 	
 		//create points for the current post_id	
 		$post_points = new GMSHC_Post_Map();
-		$post_points -> setCenter($center);
 		$post_points -> create_post_map($post->ID);	
 		$post_points -> load_points();
 		$map_points = $post_points->points;	 
@@ -273,8 +277,27 @@ function gmshc_media_buttons($admin = true)
 }
 
 add_action('media_upload_gmshc', 'gmshc_tab_handle');
+
 function gmshc_tab_handle() {
 	return wp_iframe('gmshc_tab_process');
+}
+
+/**
+ * Inserting files on the header
+ */
+function gmshc_head() {
+
+	$options = get_gmshc_options();
+	$language = $options['language'];
+	
+	$gmshc_header = "<script src=\"http://maps.google.com/maps/api/js?sensor=false";
+	if(isset($language)) 
+	$gmshc_header .= "&language=".$language;
+	$gmshc_header .="\" type=\"text/javascript\"></script>\n";	
+	$gmshc_header .= "<script type=\"text/javascript\" src=\"".GMSC_PLUGIN_URL."/js/gmshc.2.3.min.js\"></script>\n";	
+		
+	print($gmshc_header);
+
 }
 
 function gmshc_tab_process(){
@@ -320,6 +343,8 @@ function gmshc_tab_process(){
 	
 	$zoom = isset($_REQUEST['zoom']) ? $_REQUEST['zoom'] : $options['zoom'];	
 	$type = isset($_REQUEST['type']) ? $_REQUEST['type'] : $options['type'];
+	
+	$default_icon = $options['default_icon'];
 	
 	$focus = isset($_REQUEST['focus']) ? $_REQUEST['focus'] : $options['focus'];
 	$focus_type = isset($_REQUEST['focus_type']) ? $_REQUEST['focus_type'] : $options['focus_type'];	
@@ -445,17 +470,21 @@ function gmshc_tab_process(){
             <tr>
 				<td align="center" valign="top" colspan="2">
                 	<?php 
-					$thumbnail_list = gmshc_all_post_thumb($post_id);
-					if (count($thumbnail_list) > 0) { 
+					$attch_list = gmshc_all_post_thumb($post_id);
+					
+					if (count($attch_list) > 0) { 
 					?>
                         <div class="gmshc_label">
                             <?php _e("Select the thumbnail by clicking on the images","google-map-sc"); ?>
                         </div>
                         <div id="gmshc_thumb_cont">
-                        <input type="hidden" name="selected_thumbnail" value="<?php echo $default_icon ?>" id="selected_thumbnail" />
-                        <?php foreach ($thumbnail_list as $thumbnail) { ?>
+                        <input type="hidden" name="selected_thumbnail" value="" id="selected_thumbnail" />
+                        <?php 
+							foreach ($attch_list as $attch) { 
+						       $thumbnail = wp_get_attachment_image_src($attch, 'thumbnail');
+						?>
                             <div class="gmshc_thumb">
-                                <img src="<?php echo $thumbnail ?>" width="40" height="40" />
+                                <img attch="<?php echo $attch ?>" src="<?php echo $thumbnail[0] ?>" width="40" height="40" />
                             </div>
                         <?php  } ?>
                         </div>
@@ -536,7 +565,27 @@ function gmshc_tab_process(){
                  <option value="center" <?php echo ($focus_type == "center" ? "selected" : "") ?> ><?php _e("Center Markers","google-map-sc") ?></option>
               </select>
               </td>        
-            </tr>                                   
+            </tr> 
+            <tr>
+              <td align="right" valign="top"><?php _e("Module","google-map-sc") ?></td>
+              <td>
+              <select name="module" id="module">
+                 <option value=""><?php _e("none","google-map-sc") ?></option>
+              <?php 
+			  	$modules = gmshc_get_active_modules();
+
+				if (count($modules) > 0) { 
+					foreach($modules as $mod){ ?>
+						<option value="<?php echo $mod['id'] ?>"><?php echo $mod['name'] ?></option>
+					<?php }                   
+			    } ?>
+              </select>
+              <a href="http://web-argument.com/google-map-shortcode-modules/" target="_blank"><em><?php _e("Improve user interface by adding new modules") ?></em></a>
+	  
+
+              </td>        
+            </tr>            
+                                              
             <?php } ?>			
             </table>
             
@@ -584,10 +633,20 @@ function gmshc_tab_process(){
                       </td>                    
                       <td>
                       	<div class="gmshc_thumb gmshc_selected">
-                        <?php if ($point->thumbnail != "") { ?>						       
-                      	<img src="<?php echo $point->thumbnail ?>" atl="<?php _e("Thumbnail","google-map-sc") ?>" width = "40" height="40" />
-                        <input name="thumb[]" type="hidden" id="thumb_<?php echo $i ?>" size="30" value = "<?php echo $point->thumbnail ?>"/>                        
-                         <?php } ?>
+                        <?php 
+ 							$point_thumbnail = "";
+							if ($point->thumbnail != "") {
+								if(is_numeric($point->thumbnail)){
+									$thumb = wp_get_attachment_image_src($point->thumbnail, 'thumbnail');
+									$point_thumbnail = $thumb[0];
+								}else{
+									$point_thumbnail = $point->thumbnail;
+								}
+                        	?>				       
+                            <img src="<?php echo $point_thumbnail ?>" atl="<?php _e("Thumbnail","google-map-sc") ?>" width = "40" height="40" />
+                            <input name="thumb[]" type="hidden" id="thumb_<?php echo $i ?>" size="30" value = "<?php echo $point->thumbnail ?>"/>                        
+                         
+						 <?php } ?>
                          </div>                  
                       </td>
                       <td>
@@ -651,30 +710,36 @@ function gmshc_tab_process(){
 add_action('admin_menu', 'gmshc_set');
 
 function gmshc_set() {
-		$plugin_page = add_options_page('Google Map Shortcode', 'Google Map Shortcode', 'administrator', 'google-map-shortcode', 'gmshc_options_page');	 
-		add_action( 'admin_head-'.$plugin_page, 'gmshc_admin_script' );	
-	 }
+	
+	$plugin_page = add_options_page('Google Map Shortcode', 'Google Map Shortcode', 'administrator', 'google-map-shortcode', 'gmshc_options_page');	 
+	add_action( 'admin_head-'.$plugin_page, 'gmshc_admin_script' );	
+}
 
 /**
  * Inserting files on the admin header
  */
 function gmshc_admin_script() {
 
-	$gmshc_admin_header =  "\n<!-- Google Map Shortcode -->\n";		
-	$gmshc_admin_header .= "<script type=\"text/javascript\" src=\"".GMSC_PLUGIN_URL."/js/gmshc-admin.js\"></script>\n";
+	$gmshc_admin_header = "<script type=\"text/javascript\" src=\"".GMSC_PLUGIN_URL."/js/gmshc-admin.js\"></script>\n";
 	$gmshc_admin_header .= "<link href=\"".GMSC_PLUGIN_URL."/styles/gmshc-admin-styles.css\" rel=\"stylesheet\" type=\"text/css\"/>\n";
-	$gmshc_admin_header .= "\n<!-- /Google Map Shortcode -->\n";		
-		
+	
+    gmshc_enqueue_scripts();		
 	print($gmshc_admin_header);
 
 }
 
 function gmshc_options_page() {
 
-	$options = get_gmshc_options();
-	
-    if(isset($_POST['Restore_Default']))	$options = get_gmshc_options(true);	?>
+	if(isset($_POST['Restore_Default'])) $options = get_gmshc_options(true); 
 
+	do_action('gmshc_register_module');
+	
+	$options = get_gmshc_options();  
+    
+    do_action('gmshc_validate_module');   
+
+	?>
+    
 	<div class="wrap">   
 	
 	<h2><?php _e("Google Map Shortcode Settings","google-map-sc") ?></h2>
@@ -704,7 +769,8 @@ function gmshc_options_page() {
 			$newoptions['icons'] = $options['icons'];	
 					
 			$newoptions['version'] = GMSHC_VERSION_CURRENT;
-
+            $newoptions['modules'] = isset($options['modules'])?$options['modules']:array();
+			
 			if ( $options != $newoptions ) {
 				$options = $newoptions;
 				update_option('gmshc_op', $options);			
@@ -893,12 +959,12 @@ function gmshc_options_page() {
       </tr>        
       <tr>
         <td align="right" valign="top"> <strong><?php _e("Animation","google-map-sc") ?></strong></td>
-        <td><input name="animate" type="checkbox" value="true" <?php if ($animate == "true") echo "checked = \"checked\"" ?> /> <?php _e(" Check if you want to animate the markes.","google-map-sc") ?></td>        
+        <td><input name="animate" type="checkbox" value="true" <?php if ($animate == "true") echo "checked = \"checked\"" ?> /> <?php _e(" Check if you want to animate the markers.","google-map-sc") ?></td>        
       </tr>        
     </table> 
          
     <p class="submit">
-    <input type="submit" name="Submit" value="Update" class="button-primary" />
+    <input type="submit" name="Submit" value="<?php _e("Update") ?>" class="button-primary" />
     </p>
     
     <h3 style="padding-top:30px; margin-top:30px; border-top:1px solid #CCCCCC;"><?php _e("Markers","google-map-sc") ?></h3>
@@ -920,8 +986,13 @@ function gmshc_options_page() {
     </table>
     
     <p class="submit">
-    <input type="submit" name="Submit" value="Update" class="button-primary" />
+    <input type="submit" name="Submit" value="<?php _e("Update") ?>" class="button-primary" />
     </p>
+    
+    <h3 style="padding-top:30px; margin-top:30px; border-top:1px solid #CCCCCC;"><?php _e("Modules","google-map-sc") ?></h3>
+    <p><a href="http://web-argument.com/google-map-shortcode-modules/" target="_blank"><?php _e("Improve user interface by adding new modules") ?></a></p>
+    
+    <?php echo gmshc_modules_setting() ?>
     
     <h3 style="padding-top:30px; margin-top:30px; border-top:1px solid #CCCCCC;"><?php _e("Info Windows","google-map-sc") ?></h3>
     
@@ -985,7 +1056,7 @@ function gmshc_options_page() {
 
 
     <p class="submit">
-    <input type="submit" name="Submit" value="Update" class="button-primary" /><input type="submit" name="Restore_Default" value="<?php _e("Restore Default","google-map-sc") ?>" class="button" />
+    <input type="submit" name="Submit" value="<?php _e("Update") ?>" class="button-primary" /><input type="submit" name="Restore_Default" value="<?php _e("Restore Default","google-map-sc") ?>" class="button" />
     </p>
     </form>
     
@@ -1011,7 +1082,8 @@ function gmshc_plugin_menu(){
    $links_arr = array(
    						array("text"=>__("Plugin Page","google-map-sc"),"url"=>"http://web-argument.com/google-map-shortcode-wordpress-plugin/"),
 						array("text"=>__("How To Use","google-map-sc"),"url"=>"http://web-argument.com/google-map-shortcode-how-to-use/"),
-						array("text"=>__("Shortcode Reference","google-map-sc"),"url"=>"http://web-argument.com/google-map-shortcode-reference/"),						
+						array("text"=>__("Shortcode Reference","google-map-sc"),"url"=>"http://web-argument.com/google-map-shortcode-reference/"),
+						array("text"=>__("Modules","google-map-sc"),"url"=>"http://web-argument.com/google-map-shortcode-modules/"),						
 						array("text"=>__("Examples","google-map-sc"),"url"=>"http://web-argument.com/google-map-shortcode-wordpress-plugin/#examples"),
 						array("text"=>__("Donate","google-map-sc"),"url"=>"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=support%40web%2dargument%2ecom&lc=US&item_name=Web%2dArgument%2ecom&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted")
 						);

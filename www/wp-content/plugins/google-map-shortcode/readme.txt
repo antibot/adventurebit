@@ -1,30 +1,29 @@
 === Google Map Shortcode ===
 Contributors: alaingg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=support%40web%2dargument%2ecom&lc=US&item_name=Web%2dArgument%2ecom&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
-Tags: google maps, shortcode, map, maps, categories, widget, post map, point, marker, list, location, address, images, geocoder, google maps, animation
+Tags: google maps, shortcode, map, maps, categories, widget, post map, point, marker, list, location, address, images, geocoder, google maps, animation, slideshow, scroll, module
 Requires at least: 2.5
-Tested up to: 3.2.1
-Stable tag: 3.0.1
+Tested up to: 3.3
+Stable tag: 3.1
 
-Real Friendly integration of Google Map instances into your blogs. The plugin allows to display multiple maps on your pages. 
+Real Friendly integration of Google Maps instances into your blogs. The plugin allows to display multiple maps on your pages. 
 == Description ==
-This plugin allows you to include instances of Google Map in your blogs with a simple editor button. You can insert maps everywhere: in your theme files, posts and pages. The points can include custom title, description, marker and thumbnail.
+This plugin allows to include instances of Google Maps in your blogs with a simple editor button. You can insert maps everywhere: in your theme files, posts and pages. The points can include custom title, description, marker and thumbnail. The plugin is designed to allow multiple interactions with the users:  Animations, Slideshows, Scrolls and more.
 
-[Plugin Page](http://web-argument.com/google-map-shortcode-wordpress-plugin/) | [Shortcode References](http://web-argument.com/google-map-shortcode-reference/) | [How To Use](http://web-argument.com/google-map-shortcode-how-to-use/) | [Examples](http://web-argument.com/google-map-shortcode-wordpress-plugin/#examples)
+[Plugin Page](http://web-argument.com/google-map-shortcode-wordpress-plugin/) | [Shortcode References](http://web-argument.com/google-map-shortcode-reference/) | [How To Use](http://web-argument.com/google-map-shortcode-how-to-use/) | [Modules](http://web-argument.com/google-map-shortcode-modules/) | [Examples](http://web-argument.com/google-map-shortcode-wordpress-plugin/#examples)
 
 Special Features:
 
+*   Multiple features allowed like slideshows and scrolls, to interact with the maps.
 *   The plugin can handle large number of map points.
 *   Points can be added using address or coordinates.
 *   Addresses in different languages allowed.
-*	The Editor button allows to include points and maps.
-* 	Custom markers allowed.
+*	Simple editor button to include points and maps into the posts and pages.
+* 	Custom markers.
 *   Based on Google Maps Javascript API Version 3.
 *  	Faster and more applicable to mobile devices.
 * 	Maps in multiple languages.
-* 	Points under post categories can be included.
-* 	Allows to insert maps into the content and theme files.
-*   The window box opened display part of the content of your posts like: post title, thumbnails, excerpt or a custom title description and thumbnail.
+* 	Points under categories can be included.
 *   You can customize the html of the info window box on the settings.
 *   The plugin is based on Wordpress shortcode and allows many options like: initial zoom, width, height, categories, post ID, specific address, marker and thumbnail.
 
@@ -32,6 +31,7 @@ Plugin Languages:
 
 *	English - default
 *   French - Thanks to [Nicolas Mollet](http://mapicons.nicolasmollet.com)
+*   Polish - Thanks to [Łukasz Farysej](http://www.fry.li)
 *   Spanish - Thanks to [Alain Gonzalez](http://web-argument.com)
 
 Please contact me [alaingoga at gmail] in order to include your language within the plugin package.
@@ -76,6 +76,11 @@ When the map is deployed or when the Google Map Shortcode Editor panel is open i
 
 == Changelog ==  
 
+= 3.1 =
+ * Modules added.
+ * Polish language added.
+ * New icon added.
+ 
 = 3.0.1 =
  * Animation bug fixed.
 
@@ -100,7 +105,7 @@ When the map is deployed or when the Google Map Shortcode Editor panel is open i
  * Map type added.	
  * Marker animation option added. 
  * Focus option added.
- * Maps marging and aligment added.
+ * Maps margin and alignment added.
  * Performance improved. 
  * More map languages included
 
@@ -142,5 +147,5 @@ When the map is deployed or when the Google Map Shortcode Editor panel is open i
  
 == Upgrade Notice ==
 
-= 3.0 =
-Upgrade is recommended to handle large number of points and use addresses in other languages. From this version the custom fields are not needed to be used, all the data will be saved on the database.
+= 3.1 =
+Upgrade is recommended to include the new modules feature and fix some bugs.

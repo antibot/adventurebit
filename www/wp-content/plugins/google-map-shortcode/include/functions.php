@@ -1,7 +1,7 @@
 <?php 
 /**
  * Google Map Shortcode 
- * Version: 3.0.1
+ * Version: 3.1
  * Author: Alain Gonzalez
  * Plugin URI: http://web-argument.com/google-map-shortcode-wordpress-plugin/
 */
@@ -13,7 +13,7 @@
 function gmshc_generate_map($map_points, $atts) {
 
 	  extract($atts);				
-	  if ($canvas == "") $canvas = "canvas_".wp_generate_password(4, false);
+	  if ($canvas == "") $canvas = "canvas_".wp_generate_password(6, false);
 
 	  $output ='<div id="'.$canvas.'" class = "gmsc" style="width:'.$width.'px; height:'.$height.'px; ';
 	  switch ($align) {
@@ -36,46 +36,47 @@ function gmshc_generate_map($map_points, $atts) {
 	  $output .= "<script type=\"text/javascript\">\n";
 	  $output .= "var map_points_".$canvas." =  new Array();\n";
 	  
-	  $i = 0;  	  
+	  $i = 0;
 	  		  
 	  foreach ($map_points as $point){	  	 
 	  
-	  	$post_categories = wp_get_post_categories( $point->post_id );  
-		  $terms = implode(",",$post_categories);		  
+	  	  $post_categories = wp_get_post_categories( $point->post_id );  
+		  $terms = implode(",",$post_categories);		   	
 		  
 		  list($lat,$lng) = explode(",",$point->ltlg);		  
 		  		  
 		  $output .= "map_points_".$canvas."[".$i."] = \n";
 		  $output .= "{\"address\":\"".$point->address."\",\n";
 		  $output .= "\"lat\":\"".$lat."\",\n";
-		  $output .= "\"lng\":\"".$lng."\",\n";  
+		  $output .= "\"lng\":\"".$lng."\",\n";
 		  
 		  $output .= "\"info\":\"".gmshc_get_windowhtml($point)."\",\n";
 		  
 		  $output .= "\"cat\":\"".$terms."\",\n";
+		  
 		  $output .= "\"icon\":\"".$point->icon."\"};\n";
 		  $i ++;
 		  
 	  }	  
-	                        
+	  
 	  $output .= "var options_".$canvas." = {\n";
-	  $output .= "'zoom':".$zoom.",\n";        
+	  $output .= "'mapID':'map_".$canvas."',\n";
+	  $output .= "'zoom':".$zoom.",\n";
 	  $output .= "'markers':map_points_".$canvas.",\n";
 	  $output .= "'mapContainer':'".$canvas."',\n";
-	  $output .= "'focusType':'".$focus_type."',\n";		
-    $output .= "'center':'".$atts['center']."',\n";		  
-	  $output .= "'type':'".$type."',\n";
-	  
-	  
+	  $output .= "'focusType':'".$focus_type."',\n";	
+    $output .= "\"center\":\"".$center."\",\n";	  
+	  $output .= "'type':'".$type."',\n";	  
+ 
 	  switch ($focus) {
+		case "0" : 
+		break;		  
 		case "all" :  
 		$output .= "'circle':true,\n";
 		break;
-		case "0" : 
-		break;
 		default:
 		$output .= "'focusPoint':".($focus-1).",\n";
-	  }  
+	  }	 
 	    
 	  $output .= "'animateMarkers':".$animate.",\n";
 	  $output .= "'interval':'".$interval."'\n";
@@ -86,9 +87,9 @@ function gmshc_generate_map($map_points, $atts) {
 	  $output .= "gmshc.addLoadEvent(trigger_".$canvas.");\n";  
 	  $output .= "</script>\n";	
 	
-	  $output = apply_filters('gmshc_generate_map',$output,$map_points,$atts);
+	  $final_output = apply_filters('gmshc_generate_map',$output,$map_points,$atts,$canvas);
 	    
-	  return $output;
+	  return $final_output;
 }
 
 
@@ -114,7 +115,17 @@ function gmshc_get_windowhtml(&$point) {
 	if (($point->post_id) > 0)	$point_link = get_permalink($point->post_id);
 	else $point_link = "";
 	
-	$point_img_url = ($point->thumbnail != "")? $point->thumbnail : gmshc_post_img($point->post_id);
+	$point_thumbnail = "";
+	if ($point->thumbnail != "") {
+		if(is_numeric($point->thumbnail)){
+			$thumb = wp_get_attachment_image_src($point->thumbnail, 'thumbnail');
+			$point_thumbnail = $thumb[0];
+		}else{
+			$point_thumbnail = $point->thumbnail;
+		}
+	}
+	
+	$point_img_url = ($point_thumbnail != "")? $point_thumbnail : gmshc_post_img($point->post_id);
 	
 	$point_excerpt = gmshc_get_excerpt($point->post_id);
 
@@ -129,8 +140,8 @@ function gmshc_get_windowhtml(&$point) {
 		$html_width = "auto";
 	}				
 				
-	$find = array("%title%","%link%","%thubnail%", "%excerpt%","%description%","%address%","%open_map%","%width%","\f","\v","\t","\r","\n","\\","\"");
-	$replace  = array($point_title,$point_link,$point_img,$point_excerpt,$point_description,$point_address,$open_map_url,$html_width,"","","","","","","'");
+	$find = array("%title%","%link%","%thubnail%", "%excerpt%","%description%","%address%","%open_map%","%width%","\r\n","\f","\v","\t","\r","\n","\\","\"");
+	$replace  = array($point_title,$point_link,$point_img,$point_excerpt,$point_description,$point_address,$open_map_url,$html_width,"","","","","","","","'");
 	
 	$windowhtml = str_replace( $find,$replace, $windowhtml_frame);
 				
@@ -152,23 +163,24 @@ function gmshc_stripslashes_deep($value)
  */
 function gmshc_all_post_thumb($the_parent){
 
-	$images_url = array();
+	$attachments_id = array();
 	$attachments = get_children( array(
 										'post_parent' => $the_parent, 
 										'post_type' => 'attachment', 
 										'post_mime_type' => 'image',
 										'orderby' => 'menu_order', 
 										'order' => 'ASC',
-										'numberposts' => 10) );
+										'numberposts' => 10) );									
+						
 											
 	if($attachments == true) :
-		foreach($attachments as $id => $attachment) :
-			$img = wp_get_attachment_image_src($id, 'thumbnail');
-		    array_push($images_url,$img[0]);
+		foreach($attachments as $attachment) :
+			//$img = wp_get_attachment_image_src($id, 'thumbnail');
+		    array_push($attachments_id,$attachment->ID);
 		endforeach;		
 	endif;
 
-	return $images_url; 
+	return $attachments_id; 
 }
 
 /**
@@ -295,7 +307,7 @@ function gmshc_get_points($post_id) {
 	$default_icon = $options['default_icon'];	
 	$post_title = get_the_title($post_id);	
 	
-	if (count($post_data_address) > 0) { 
+	if (is_array($post_data_address) && count($post_data_address) > 0) { 
 	
 		foreach ($post_data_address as $point_address){
 			$point_obj_address = new GMSHC_Point();
@@ -309,7 +321,7 @@ function gmshc_get_points($post_id) {
 	$post_data_ltlg = get_post_meta($post_id,'google-map-sc-latlng');
 	
 	if (count($post_data_ltlg) > 0) { 
-	
+	print_r($post_data_ltlg);
 		foreach ($post_data_ltlg as $point_ltlg){
 			$point_obj_ltlg = new GMSHC_Point();
 			if ($point_obj_ltlg -> create_point("","",$point_ltlg,$post_title,"",$default_icon,"",$post_id)){		
@@ -408,7 +420,11 @@ function gmshc_point($address,$ltlg){
 }
 
 function gmshc_clean_string($str){
-	return htmlentities(html_entity_decode(stripslashes($str),ENT_QUOTES,"UTF-8"),ENT_QUOTES,"UTF-8");
+	$find = array("\r\n","\f","\v","\t","\r","\n","\\","\"","  ");
+	$replace  = array("","","","","","","","'"," ");
+	
+	$clean_str = str_replace( $find,$replace, $str);	
+	return htmlentities(html_entity_decode(stripslashes($clean_str),ENT_QUOTES,"UTF-8"),ENT_QUOTES,"UTF-8");
 }
 
 /**
@@ -547,4 +563,219 @@ function gmshc_get_bd_points($post_id) {
 
 }
 
+/**
+ * Modules functions
+ */
+function gmshc_load_modules() {
+
+	$gmshc_modules = array ();
+	$mod_root = GMSC_PLUGIN_DIR."/modules";
+
+	// Files in google-map-shortcode/modules directory
+	$mod_dir = @ opendir( $mod_root);
+	$mod_files = array();
+	if ( $mod_dir ) {
+		while (($file = readdir( $mod_dir ) ) !== false ) {
+			if ( substr($file, 0, 1) == '.' )
+				continue;							
+			if ( is_dir( $mod_root.'/'.$file ) ) {				
+				$mod_subdir = @ opendir( $mod_root.'/'.$file );				
+				if ( $mod_subdir ) {
+					while (($subfile = readdir( $mod_subdir ) ) !== false ) {
+						
+						if ( substr($subfile, 0, 1) == '.' )
+							continue;
+						if ( substr($subfile, -4) == '.php' )
+							$gmshc_modules[] = "$file";
+					}
+					closedir( $mod_subdir );
+				}
+			} 
+		}
+		closedir( $mod_dir );
+	}
+
+	if ( count($gmshc_modules) > 0 ) {
+		foreach ($gmshc_modules as $module) {
+			if (gmshc_check_available_modules($module)) {
+					require_once (GMSC_PLUGIN_DIR."/modules/".$module."/functions.php");
+
+			}
+		}
+	}	
+
+}
+
+function gmshc_available_modules(){
+	$modules = array(
+					array(
+											"id" => "slideshow",
+											"name" => __("Slideshow"),
+											"copy" => __("Allow more interaction with your maps, including a slideshow with the points images."),
+											"url" => "http://web-argument.com/google-map-shortcode-modules/#slideshow",
+											"image" => GMSC_PLUGIN_URL."/images/slideshow.jpg"
+						 ),
+					array(
+											"id" => "scroller",
+											"name" => __("Scroller"),
+											"copy" => __("Access the maps points easily, adding custom scrollbar with the points images."),
+											"url" => "http://web-argument.com/google-map-shortcode-modules/#scroller",
+											"image" => GMSC_PLUGIN_URL."/images/scroller.jpg"															
+					));
+						
+	return $modules; 
+}
+
+function gmshc_check_available_modules($module_id){
+	    
+		$gmshc_av_modules = gmshc_available_modules();
+		
+		foreach ($gmshc_av_modules as $av_modules) {
+			if ($av_modules["id"] == $module_id ){
+				return true;
+			}
+		}
+		return false;	
+}
+
+function gmshc_update_module($module){	
+	
+	if (!gmshc_check_available_modules($module["id"])) {
+		return false;
+	}	   
+	$gmshc_options = get_gmshc_options();
+	$reg_mod = gmshc_is_module_register($module["id"]);
+	
+	if (is_numeric($reg_mod)) {
+				 
+		$modules = $gmshc_options["modules"];	
+		$modules[$reg_mod] = $module; 
+		$gmshc_options["modules"] = $modules;		
+		update_option('gmshc_op', $gmshc_options);
+		return true;
+
+	} else {
+		$modules = (isset($gmshc_options["modules"])) ? $gmshc_options["modules"] : array();
+		$modules[] = $module;		
+	} 
+	
+	$gmshc_options["modules"] = $modules;
+
+	update_option('gmshc_op', $gmshc_options);
+		
+}
+
+function gmshc_register_module($module){	
+	
+	if (!gmshc_check_available_modules($module["id"])) {
+		return false;
+	}  
+	
+	$reg_mod = gmshc_is_module_register($module["id"]);
+
+	if (is_numeric($reg_mod)) {
+		return true;
+	} else {
+		gmshc_update_module($module);
+	}
+
+}
+
+function gmshc_modules_setting() {
+	
+	$modules = gmshc_available_modules();
+	$output = "<div id='gmshc_mod_container'>";
+	foreach ($modules as $module){
+		$output .= gmshc_render_module($module);
+	}
+	$output .= "</div>";
+	return $output;	
+}
+
+function gmshc_render_module($module) {
+
+	$output = "<div class='gmshc_mod_box'>";
+	$output .= "<h4>".$module['name']."</h4>";
+	$output .= "<p>".$module['copy']."<p>";
+	$output .= "<p align='center'><a href='".$module['url']."' target='_blank' title='".$module['name']."'><img src='".$module['image']."' /></a></p>";
+	$output .= "<p align='left'><a href='".$module['url']."' target='_blank' title='".$module['name']."'><input type='button' value='".__('Install')."' class='button' /></a></p>";
+	$output .= "</div>";
+				
+	$output = apply_filters('gmshc_render_module',$output,$module['id']);
+		
+	return $output;	
+}
+
+function gmshc_get_module_options($mod_id){
+	
+		$gmshc_options = get_gmshc_options();
+
+		if(isset($gmshc_options['modules'])){
+			$modules = $gmshc_options['modules'];
+			if (count($modules) > 0){
+				$i = 0;
+				foreach($modules as $module){
+					if ($module["id"] == $mod_id){
+						return $modules[$i];	
+					}
+					$i ++;			
+				}
+			}
+		}
+}
+
+function gmshc_is_module_register($mod_id){
+	
+	$gmshc_options = get_gmshc_options();
+	
+	if(isset($gmshc_options["modules"]) && count($gmshc_options["modules"]) > 0){
+		$modules = $gmshc_options["modules"];
+
+		foreach($modules as $id => $reg_module){
+
+			if ($reg_module["id"] == $mod_id){
+				return $id;
+			} 
+		}
+	}
+	
+}
+
+function gmshc_is_module_enabled($mod_id){
+
+	$gmshc_options = get_gmshc_options();
+	
+	if(isset($gmshc_options["modules"]) && count($gmshc_options["modules"]) > 0){
+		$modules = $gmshc_options["modules"];
+
+		foreach($modules as $id => $reg_module){
+
+			if ($reg_module["id"] == $mod_id && $reg_module["enable"]){
+				return true;
+			} 
+		}
+	}
+	return false;	
+	
+}
+
+function gmshc_get_active_modules(){
+	
+	$gmshc_options = get_gmshc_options();
+	$active_mods = array();
+	
+	if(isset($gmshc_options["modules"]) && count($gmshc_options["modules"]) > 0){
+		$modules = $gmshc_options["modules"];
+        
+		foreach($modules as $id => $reg_module){
+			if ($reg_module["enable"] == 1){
+				$active_mods[] = $reg_module;
+			} 
+		}
+		
+	}
+	
+	return $active_mods;
+	
+}
 ?>

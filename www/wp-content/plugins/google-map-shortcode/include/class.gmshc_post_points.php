@@ -11,11 +11,6 @@ class GMSHC_Post_Map
 	var $post_id;
 	var $points = array();
 	var $points_number;
-	var $center;
-	
-	function setCenter($center) {
-    $this->center = $center;
-  }
 	
 	function create_post_map($post_id) {
 		$this->post_id = $post_id;		
