@@ -112,7 +112,7 @@
     global $current_user;
     get_currentuserinfo()
     ?>           
-      <div><big>Restoration</big></div>    
+      <div><big>Restoration password</big></div>    
       <form id="inout_restore" method="post">
         <label class="inout_password">
           <div>Password:</div>

@@ -43,6 +43,13 @@ $(document).ready(function(){
     INOUT.content.find('.inout_error').empty();
   }
   
+  INOUT.empty_error_animate = function() {
+    INOUT.content.find('.inout_error').fadeOut('fast', function(){
+      var elem = $(this);
+      elem.empty();
+    });
+  }
+  
   INOUT.inputs = function() {
     return INOUT.content.find('input[type="text"], input[type="password"]');
   }
@@ -80,9 +87,7 @@ $(document).ready(function(){
     var type = fields.type;
     
     $.post(INOUT_PLUGIN_URL+'modules/validation.php', fields, function(data) {
-    
-      console.dir(data);
-    
+
       INOUT.empty_error();
       
       if(data) {
@@ -99,7 +104,7 @@ $(document).ready(function(){
             }
           } else {
             $.each(info, function(i, what) {
-              INOUT.content.find('.inout_'+what.name).find('.inout_error').html(what.message);    
+              INOUT.content.find('.inout_'+what.name).find('.inout_error').html(what.message).fadeIn('fast');    
             });  
             
             /*  You can animate and add any css to error input tags
@@ -131,7 +136,7 @@ $(document).ready(function(){
   ----------------------------------------------------------------------------*/
   
   INOUT.content.delegate('.inout_error', 'click', function() {
-    INOUT.empty_error();   
+    INOUT.empty_error_animate();   
   });
   
   /*  Actions

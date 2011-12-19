@@ -7,6 +7,18 @@ Author: Selikhov Dmitry
 Version: 1.0
 Author URI: http://adventurebit.com/
 */
+
+
+/* short tags 
+
+{BLOGNAME} - name of your blog
+{BLOGLINK} - link to your blog
+{TIME} - current time
+{CODE} - special code of special link
+{CODELINK} - special link to verification (confirmation registration / restoration password) 
+{EMAIL} - your email
+
+------------------------------------------------------------------------------*/
     
 include_once 'modules/form.php';    
     
@@ -50,29 +62,60 @@ function files() {
  
 add_action('wp_footer', 'files'); 
  
+global $confirmation;  
+global $restoration; 
+global $message; 
+
 function inout()
 {
-  if($_GET['confirmation']) {
-    $confirmation = $_GET['confirmation'];
-  }
-  if($_GET['restoration']) {
-    $restoration = $_GET['restoration'];
-  }
+
 }
 
-function FORM_CONTENT() {
-  if(is_user_logged_in()) {
-    return EXIT_CONTENT();     
-  } else {
-    return AUTHORIZATION_CONTENT();  
+function FORM_CONTENT() {  
+    
+  $data = new stdClass();
+  $data->message = '';    
+       
+  if(isset($_GET['confirmation'])) {     
+    $confirmation = $_GET['confirmation'];
+    
+    $data->message = 'Registration completed!';
+    
+    ob_start();
+      AUTHORIZATION_CONTENT(); 
+    $data->form = ob_get_clean(); 
+      
+    return $data;
+  } 
+      
+  if(isset($_GET['restoration'])) {
+    $restoration = $_GET['restoration'];
+    
+    ob_start();
+      RESTORATION_CONTENT(); 
+    $data->form = ob_get_clean(); 
+      
+    return $data;
   }
+
+  if(is_user_logged_in()) {
+    ob_start();
+      EXIT_CONTENT(); 
+    $data->form = ob_get_clean();    
+  } else {
+    ob_start();
+      AUTHORIZATION_CONTENT(); 
+    $data->form = ob_get_clean();   
+  } 
+  
+  return $data; 
 }
 
 /* Shortcode
 ------------------------------------------------------------------------------*/ 
 
 function inout_shortcode($args) {
-  echo FORM_CONTENT();  
+  echo FORM_CONTENT();   
 }
 
 add_shortcode('easy_in_up', 'inout_shortcode');
@@ -84,8 +127,10 @@ function widget_inout_content($args) {
 
   $options = get_option('inout');
   extract($args);
-
+     
   $title = $options['title'];  
+  
+  $data = FORM_CONTENT();
      
   echo  $before_widget,
         $before_title,
@@ -95,9 +140,9 @@ function widget_inout_content($args) {
         '<div class="inout_screen"></div>',
         '<div class="inout_loading"></div>',
         '<div class="inout_content">',
-        FORM_CONTENT(),
+        $data->form,
         '</div>',
-        '<div class="inout_message"></div>',
+        '<div class="inout_message">'.$data->message.'</div>',
         '</div>',
         $after_widget;
 }
@@ -105,13 +150,32 @@ function widget_inout_content($args) {
 function widget_inout_control() {
 
   $options = get_option('inout', array(
+  
     'title' => 'Easy Sign In/Up',
     'email' => get_option('admin_email'),
-    'auth-redirect' => '',
-    'reg-redirect' => '',
-    'exit-redirect' => '',
+    'confirm' => 'on',
+    'auth-redirect' => home_url(),
+    'reg-redirect' => home_url(),
+    'exit-redirect' => home_url(),
     'conf-reg-line' => '{BLOGNAME} - registration confirmation',
     'rest-pwd-line' => '{BLOGNAME} - password restoration',
+    'conf-reg-text' => '
+To confirm the registration on the {BLOGLINK} click on the link below.
+
+{CODELINK}
+
+If you did not ask for registration, please do not pay attention to this letter.
+Best wishes, {BLOGLINK} administration.',
+
+  'rest-pwd-text' => '
+To change the password on the {BLOGLINK} click on the link below.
+
+{CODELINK}
+
+If you did not request a password change, please do not pay attention to this letter.
+
+Best wishes, {BLOGLINK} administration.'
+
   ));
   
   if(isset($_POST['nonce'])) {
@@ -146,11 +210,6 @@ function widget_inout_control() {
   <input class="widefat" type="text" name="email" maxlength="100" value="<?= $options['email'] ?>" /> 
 </p>
 
-<p>       
-  <input type="checkbox" name="confirm" <?= $options['confirm'] == 'on' ? 'checked' : '' ?> /> 
-  Confirm registration?  
-</p>
-
 <p>
   <div>
     Authorization redirect link:
@@ -170,6 +229,11 @@ function widget_inout_control() {
     Exit redirect link:
   </div>   
   <input class="widefat" type="text" name="exit-redirect" maxlength="100" value="<?= $options['exit-redirect'] ?>" /> 
+</p>
+
+<p>       
+  <input type="checkbox" name="confirm" <?= $options['confirm'] == 'on' ? 'checked' : '' ?> /> 
+  Confirm registration?  
 </p>
 
 <p> 
@@ -192,11 +256,12 @@ function widget_inout_control() {
   <div>
     <i>Special tags:</i>
   </div>
-  {BLOGNAME}
-  {BLOGLINK}
-  {TIME}
-  {CODE}
-  {CODELINK}
+  <span title="name of your blog">{BLOGNAME}</span>
+  <span title="link to your blog">{BLOGLINK}</span>
+  <span title="current time">{TIME}</span>
+  <span title="special code">{CODE}</span>
+  <span title="special link to verification">{CODELINK}</span>
+  <span title="your email">{EMAIL}</span>
 </p>
 
 <input type="hidden" name="nonce" value="<?= wp_create_nonce('inout'); ?>" /> 

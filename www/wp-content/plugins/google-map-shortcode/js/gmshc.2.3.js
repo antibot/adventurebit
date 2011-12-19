@@ -41,8 +41,6 @@ gmshc.Map = function(settings){
 	this.disableMap = false;
 	this.statusCallback = null;
 	this.center = settings.center.split(','); 
-	
-	console.dir(settings);
 };
 
 gmshc.MapProto = {
